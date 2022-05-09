@@ -1,4 +1,5 @@
 from cProfile import label
+from email.mime import image
 from tkinter import *
 import socket
 import threading
@@ -41,6 +42,15 @@ afegir_contactes.place(x=195, y=60)
 
 frame_conversa = Frame(chat_ventana, bg="#ffffff", width=863, height=668, borderwidth=2, relief="solid")
 frame_conversa.place(x=268)
+
+canvas_convera = Canvas(frame_conversa, width=855, height=550, borderwidth=0)
+canvas_convera.place(x=0,y=70)
+
+bg = PhotoImage(file="fondo2.png")
+si = Label(canvas_convera, image=bg)
+si.place(x=0, y=20)
+
+
 
 frame_usuari = Frame(frame_conversa, bg="#4682B4", width=859, height=80, borderwidth=0)
 frame_usuari.place(x=0)
