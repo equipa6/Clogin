@@ -36,12 +36,19 @@ frame_lateral = Frame(chat_ventana, bg="#057fbc", width=270, height=668, borderw
 frame_lateral.place(x=0)
 
 photo_logo_clogin = PhotoImage(file="logo.png")
-photo_logo_clogin = photo_logo_clogin.subsample(14)
+photo_logo_clogin = photo_logo_clogin.subsample(20)
 logo_clogin = Label(frame_lateral, image=photo_logo_clogin, borderwidth=0, bg="#057fbc")
-logo_clogin.place(x=45, y=1)
+logo_clogin.place(x=60, y=0)
 
-nom_clogin = Label(frame_lateral, text="CLOGIN", font=("Calibri", 18, "bold"), bg="#057fbc")
-nom_clogin.place(x=110, y=21)
+nom_clogin = Label(frame_lateral, text="CLOGIN", font=("Calibri", 15, "bold"), bg="#057fbc")
+nom_clogin.place(x=110, y=10)
+
+line_clogin_sota = Frame(frame_lateral, width=266, height=2, bg="black")
+line_clogin_sota.place(x=0, y=50)
+
+
+
+ajustes_foto = PhotoImage()
 
 # ----------------------------------------------------------------------------------------------------------
 
@@ -79,8 +86,6 @@ menu.add_radiobutton(label="Bloquejar", font=("Calibri", 13, "bold"))
 menu.add_radiobutton(label="Arxivar", font=("Calibri", 13, "bold"))
 menu.add_radiobutton(label="Ancorar", font=("Calibri", 13, "bold"))
 label_ajustes_button["menu"] = menu
-
-
 
 # ----------------------------------------------------------------------------------------------------------
 
