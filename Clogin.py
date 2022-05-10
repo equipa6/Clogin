@@ -24,9 +24,12 @@ def windows_afegir_usuaris():
     ventana_afegir_usuaris.mainloop()
 
 def validacio_conta(name, password):
-    if name == "admin" and password == "admin":
+    #if name == "admin" and password == "admin":
+    try:
         root.destroy()
-        chat_ventana_funcion(name.capitalize())
+    except:
+        pass
+    chat_ventana_funcion(name.capitalize())
 
 def chat_ventana_funcion(nom_usuari_lateral):
     chat_ventana = Tk()
@@ -113,8 +116,6 @@ def chat_ventana_funcion(nom_usuari_lateral):
     chat_ventana.mainloop()
 
 def registredesessio():
-    global inpconfirmaciocontrasenya
-    global inpcontrasenya
     global ventana
     root.destroy()
     ventana = Tk()
@@ -149,7 +150,7 @@ def registredesessio():
     inpconfirmaciocontrasenya.place(x=28, y=395)
     inpconfirmaciocontrasenya.config(show="*")
 
-    botonsingup = Button(ventana, text="Registra't", fg="#ffee04", bg="#606fff", cursor="hand2", font=("Calibri", 15, "bold"), width=18, borderwidth=0, command=confirmacio_contrasenya, activebackground="#ffff98", activeforeground="#606fff")
+    botonsingup = Button(ventana, text="Registra't", fg="#ffee04", bg="#606fff", cursor="hand2", font=("Calibri", 15, "bold"), width=18, borderwidth=0, command=lambda:confirmacio_contrasenya(inpnom.get(), inpcontrasenya.get(), inpconfirmaciocontrasenya.get()), activebackground="#ffff98", activeforeground="#606fff")
     botonsingup.place(x=108, y=475)
 
     imatgeenrere = PhotoImage(file="enrere.png")
@@ -202,13 +203,14 @@ def inicidesessio():
     
     root.mainloop()
 
-def confirmacio_contrasenya():
-    respostaconfirmacio = inpconfirmaciocontrasenya.get()
-    respostacontrasenya = inpcontrasenya.get()
-
-    if respostaconfirmacio != respostacontrasenya:
+def confirmacio_contrasenya(nom_confirmer, contraseña_confirmer, repeteix_contraseña_confirmer):
+    if contraseña_confirmer != repeteix_contraseña_confirmer:
         error = Label(ventana, text="Les contrasenyes no coincideixen", font=("Calibri", 12, "bold"), fg="red", bg="#FFFFFF")
-        error.place(x= 88, y= 430)  
-
+        error.place(x= 88, y= 430)
+    else:
+        if nom_confirmer.strip() != "" and contraseña_confirmer.strip() != "" and repeteix_contraseña_confirmer.strip() != "":
+            ventana.destroy()
+            validacio_conta(nom_confirmer, contraseña_confirmer)
+     
 inicidesessio()
 
