@@ -26,9 +26,9 @@ def windows_afegir_usuaris():
 def validacio_conta(name, password):
     if name == "admin" and password == "admin":
         root.destroy()
-        chat_ventana_funcion()
+        chat_ventana_funcion(name.capitalize())
 
-def chat_ventana_funcion():
+def chat_ventana_funcion(nom_usuari_lateral):
     chat_ventana = Tk()
     chat_ventana.title("Clogin")
     chat_ventana.geometry("1131x668")
@@ -68,8 +68,8 @@ def chat_ventana_funcion():
     usuari_foto = Label(frame_lateral, image=foto_usuari_perfil_lateral, borderwidth=0, bg="#84C4F4")
     usuari_foto.place(x=25, y=85)
 
-    my_name = Label(frame_lateral, text="Your Name", font=("Calibri", 15, "bold"), bg="#84C4F4")
-    my_name.place(x=120, y=110)
+    my_name = Label(frame_lateral, text=nom_usuari_lateral, font=("Calibri", 15, "bold"), bg="#84C4F4")
+    my_name.place(x=125, y=110)
 
     # ----------------------------------------------------------------------------------------------------------
 
