@@ -2,6 +2,27 @@ from tkinter import *
 import socket
 import threading
 
+def windows_afegir_usuaris():
+    ventana_afegir_usuaris = Toplevel()
+    ventana_afegir_usuaris.geometry("600x300")
+    ventana_afegir_usuaris.config(bg="#8cb3ff")
+    ventana_afegir_usuaris.title("Afegir usuaris")
+    ventana_afegir_usuaris.resizable(0,0)
+    ventana_afegir_usuaris.geometry("+375+125")
+    titol_usuaris = Label(ventana_afegir_usuaris, text="Afegir usuaris", font=("THIN", 18, "bold"), bg="#8cb3ff")
+    titol_usuaris.place(x=62, y=45)
+    introduir_nom_usuari = Label(ventana_afegir_usuaris, text="Introdueix el nom de l'usuari", font=("THIN", 16), bg="#8cb3ff")
+    introduir_nom_usuari.place(x=17, y= 100)
+    nom_afegir_usuari = Entry(ventana_afegir_usuaris, font=("Calibri", 16), borderwidth=1, relief="solid", bg="#ffee04")
+    nom_afegir_usuari.place(x=35, y=150)
+    boto_afegir_usuaris = Button(ventana_afegir_usuaris, text="Afegeix", fg="#ffee04",bg="#606fff", cursor="hand2",font=("Calibri", 13, "bold"),width=14, borderwidth=0)
+    boto_afegir_usuaris.place(x=78,y=210 )
+    imatge_usuari = PhotoImage(file="contactes.png")
+    tamany_imatge = imatge_usuari.subsample(2)
+    imatge_ventana = Label(ventana_afegir_usuaris, image=tamany_imatge, bg="#8cb3ff")
+    imatge_ventana.place(x=330, y=10)
+    ventana_afegir_usuaris.mainloop()
+
 def validacio_conta(name, password):
     if name == "admin" and password == "admin":
         root.destroy()
@@ -36,7 +57,7 @@ def chat_ventana_funcion():
 
     foto_afegir_contactes = PhotoImage(file="adduser.png")
     foto_afegir_contactes = foto_afegir_contactes.subsample(23)
-    afegir_contactes = Button(frame_lateral, image=foto_afegir_contactes, borderwidth=0, bg="#057fbc", cursor="hand2", activebackground="#057fbc")
+    afegir_contactes = Button(frame_lateral, image=foto_afegir_contactes, borderwidth=0, bg="#057fbc", cursor="hand2", activebackground="#057fbc", command=windows_afegir_usuaris)
     afegir_contactes.place(x=195, y=10)
 
     label_tu_cuenta = Label(frame_lateral, text="Has iniciat sessió amb:", font=("THIN", 13, "bold"), bg="#057fbc", fg="#ffffff")
