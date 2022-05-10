@@ -13,9 +13,9 @@ def windows_afegir_usuaris():
     titol_usuaris.place(x=62, y=45)
     introduir_nom_usuari = Label(ventana_afegir_usuaris, text="Introdueix el nom de l'usuari", font=("THIN", 16), bg="#8cb3ff")
     introduir_nom_usuari.place(x=17, y= 100)
-    nom_afegir_usuari = Entry(ventana_afegir_usuaris, font=("Calibri", 16), borderwidth=1, relief="solid", bg="#ffee04")
+    nom_afegir_usuari = Entry(ventana_afegir_usuaris, font=("Calibri", 16), borderwidth=1, relief="solid", bg="#ffffff")
     nom_afegir_usuari.place(x=35, y=150)
-    boto_afegir_usuaris = Button(ventana_afegir_usuaris, text="Afegeix", fg="#ffee04",bg="#606fff", cursor="hand2",font=("Calibri", 13, "bold"),width=14, borderwidth=0)
+    boto_afegir_usuaris = Button(ventana_afegir_usuaris, text="Afegeix", fg="#ffee04",bg="#606fff", cursor="hand2",font=("Calibri", 13, "bold"),width=14, borderwidth=0, activebackground="#ffff98", activeforeground="#606fff")
     boto_afegir_usuaris.place(x=78,y=210 )
     imatge_usuari = PhotoImage(file="contactes.png")
     tamany_imatge = imatge_usuari.subsample(2)
@@ -36,39 +36,39 @@ def chat_ventana_funcion():
 
     # Frame Lateral --------------------------------------------------------------------------------------------
 
-    frame_lateral = Frame(chat_ventana, bg="#057fbc", width=270, height=668, borderwidth=2, relief="solid")
+    frame_lateral = Frame(chat_ventana, bg="#84C4F4", width=270, height=668, borderwidth=2, relief="solid")
     frame_lateral.place(x=0)
 
     photo_logo_clogin = PhotoImage(file="logo.png")
     photo_logo_clogin = photo_logo_clogin.subsample(22)
-    logo_clogin = Label(frame_lateral, image=photo_logo_clogin, borderwidth=0, bg="#057fbc")
+    logo_clogin = Label(frame_lateral, image=photo_logo_clogin, borderwidth=0, bg="#84C4F4")
     logo_clogin.place(x=0, y=0)
 
-    nom_clogin = Label(frame_lateral, text="CLOGIN", font=("Calibri", 12, "bold"), bg="#057fbc", fg="#ffffff")
+    nom_clogin = Label(frame_lateral, text="CLOGIN", font=("Calibri", 12, "bold"), bg="#84C4F4", fg="#ffffff")
     nom_clogin.place(x=40, y=11)
 
-    line_clogin_sota = Frame(frame_lateral, width=266, height=2, bg="#A9CAE8")
-    line_clogin_sota.place(x=0, y=80)
+    line_clogin_sota = Frame(frame_lateral, width=266, height=2, bg="black")
+    line_clogin_sota.place(x=0, y=45)
 
     imagen_ajustes_generales_button = PhotoImage(file="botoajustes.png")
     imagen_ajustes_generales_button = imagen_ajustes_generales_button.subsample(23)
-    ajustes_generales_button = Button(frame_lateral, image=imagen_ajustes_generales_button, borderwidth=0, bg="#057fbc", cursor="hand2", activebackground="#057fbc")
+    ajustes_generales_button = Button(frame_lateral, image=imagen_ajustes_generales_button, borderwidth=0, bg="#84C4F4", cursor="hand2", activebackground="#84C4F4")
     ajustes_generales_button.place(x=230, y=10)
 
     foto_afegir_contactes = PhotoImage(file="adduser.png")
     foto_afegir_contactes = foto_afegir_contactes.subsample(23)
-    afegir_contactes = Button(frame_lateral, image=foto_afegir_contactes, borderwidth=0, bg="#057fbc", cursor="hand2", activebackground="#057fbc", command=windows_afegir_usuaris)
+    afegir_contactes = Button(frame_lateral, image=foto_afegir_contactes, borderwidth=0, bg="#84C4F4", cursor="hand2", activebackground="#84C4F4", command=windows_afegir_usuaris)
     afegir_contactes.place(x=195, y=10)
 
-    label_tu_cuenta = Label(frame_lateral, text="Has iniciat sessió amb:", font=("THIN", 13, "bold"), bg="#057fbc", fg="#ffffff")
-    label_tu_cuenta.place(x=42, y=45)
+    label_tu_cuenta = Label(frame_lateral, text="Has iniciat sessió amb:", font=("Calibri", 16, "bold"), bg="#84C4F4", fg="black")
+    label_tu_cuenta.place(x=35, y=50)
 
     foto_usuari_perfil_lateral = PhotoImage(file="second_foto.png")
     foto_usuari_perfil_lateral = foto_usuari_perfil_lateral.subsample(13)
-    usuari_foto = Label(frame_lateral, image=foto_usuari_perfil_lateral, borderwidth=0, bg="#057fbc")
-    usuari_foto.place(x=25, y=90)
+    usuari_foto = Label(frame_lateral, image=foto_usuari_perfil_lateral, borderwidth=0, bg="#84C4F4")
+    usuari_foto.place(x=25, y=85)
 
-    my_name = Label(frame_lateral, text="Your Name", font=("Calibri", 15, "bold"), bg="#057fbc")
+    my_name = Label(frame_lateral, text="Your Name", font=("Calibri", 15, "bold"), bg="#84C4F4")
     my_name.place(x=120, y=110)
 
     # ----------------------------------------------------------------------------------------------------------
