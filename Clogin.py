@@ -210,7 +210,7 @@ def confirmacio_contrasenya(nom_confirmer, contraseña_confirmer, repeteix_contr
     else:
         if nom_confirmer.strip() != "" and contraseña_confirmer.strip() != "" and repeteix_contraseña_confirmer.strip() != "":
             ventana.destroy()
-            validacio_conta(nom_confirmer, contraseña_confirmer)
+            validacio_conta(nom_confirmer.strip(), contraseña_confirmer.strip())
      
 inicidesessio()
 
