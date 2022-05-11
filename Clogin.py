@@ -131,8 +131,8 @@ def window_afegir_usuaris():
         ventana_afegir_usuaris.mainloop()
     
 def validacio_conta(name, password):
-    name = name.capitalize()
-    password = password.capitalize()
+    name = name.strip()
+    password = password.strip()
     if name != "" and password != "":
         nom_tretze = confirmacio_nom_usuari_tretze()
         if nom_tretze == False:
@@ -141,6 +141,17 @@ def validacio_conta(name, password):
             except:
                 pass
             chat_ventana_funcion(name.capitalize())
+
+def validacio_conta_registre_sessio(name_registre, password_registre, validator):
+    name_registre = name_registre.strip()
+    password_registre = password_registre.strip()
+    if name_registre != "" and password_registre != "":
+        if validator == False:
+            try:
+                ventana.destroy()
+            except:
+                pass
+            chat_ventana_funcion(name_registre.capitalize())
 
 def chat_ventana_funcion(nom_usuari_lateral):
     chat_ventana = Tk()
@@ -228,6 +239,7 @@ def chat_ventana_funcion(nom_usuari_lateral):
 
 def registredesessio():
     global ventana
+    global inpnom
     root.destroy()
     ventana = Tk()
     ventana.geometry("400x600")
@@ -261,7 +273,7 @@ def registredesessio():
     inpconfirmaciocontrasenya.place(x=28, y=395)
     inpconfirmaciocontrasenya.config(show="*")
 
-    botonsingup = Button(ventana, text="Registra't", fg="#ffee04", bg="#606fff", cursor="hand2", font=("Calibri", 15, "bold"), width=18, borderwidth=0, command=lambda:confirmacio_contrasenya(inpnom.get(), inpcontrasenya.get(), inpconfirmaciocontrasenya.get()), activebackground="#ffff98", activeforeground="#606fff")
+    botonsingup = Button(ventana, text="Registra't", fg="#ffee04", bg="#606fff", cursor="hand2", font=("Calibri", 15, "bold"), width=18, borderwidth=0, command=lambda:confirmacio_nom_usuari_tretze_registre_sessio(inpnom.get(), inpcontrasenya.get(), inpconfirmaciocontrasenya.get()), activebackground="#ffff98", activeforeground="#606fff")
     botonsingup.place(x=108, y=475)
 
     imatgeenrere = PhotoImage(file="enrere.png")
@@ -313,16 +325,7 @@ def inicidesessio():
     button_register = Button(root, text="Registra't", fg="#ffee04", bg="#606fff", cursor="hand2", font=("Calibri", 15, "bold"), width=16, borderwidth=0, command=registredesessio, activebackground="#ffff98", activeforeground="#606fff")
     button_register.place(x=195, y=525)
     
-    root.mainloop()
-
-def confirmacio_contrasenya(nom_confirmer, contraseña_confirmer, repeteix_contraseña_confirmer):
-    if contraseña_confirmer != repeteix_contraseña_confirmer:
-        error = Label(ventana, text="Les contrasenyes no coincideixen", font=("Calibri", 12, "bold"), fg="red", bg="#FFFFFF")
-        error.place(x= 88, y= 430)
-    else:
-        if nom_confirmer.strip() != "" and contraseña_confirmer.strip() != "" and repeteix_contraseña_confirmer.strip() != "":
-            ventana.destroy()
-            validacio_conta(nom_confirmer.strip(), contraseña_confirmer.strip())
+    root.mainloop()     
 
 def confirmacio_nom_usuari_tretze():
     validator_nom_tretze_usuari = False
@@ -331,6 +334,21 @@ def confirmacio_nom_usuari_tretze():
         error_nom_usuari.place(x=100, y=235)
         validator_nom_tretze_usuari = True
     return validator_nom_tretze_usuari
+
+def confirmacio_nom_usuari_tretze_registre_sessio(nom_confirmer, contraseña_confirmer, repeteix_contraseña_confirmer):
+    validator_registre = False
+
+    if len(nom_confirmer) > 13:
+        error_nom_usuari_registre = Label(ventana, text="Hi han més de 13 caràcters", font=("Calibri", 12, "bold"), fg="red", bg="white")
+        error_nom_usuari_registre.place(x=100, y=240)
+        validator_registre = True
+
+    if contraseña_confirmer != repeteix_contraseña_confirmer:
+        error = Label(ventana, text="Les contrasenyes no coincideixen", font=("Calibri", 12, "bold"), fg="red", bg="#FFFFFF")
+        error.place(x= 88, y= 430)
+        validator_registre = True
+
+    validacio_conta_registre_sessio(nom_confirmer, contraseña_confirmer, validator_registre)
 
 inicidesessio()
 
