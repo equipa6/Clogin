@@ -2,27 +2,38 @@ from tkinter import *
 import socket
 import threading
 
-def windows_afegir_usuaris():
-    ventana_afegir_usuaris = Toplevel()
-    ventana_afegir_usuaris.geometry("600x300")
-    ventana_afegir_usuaris.config(bg="#8cb3ff")
-    ventana_afegir_usuaris.title("Afegir usuaris")
-    ventana_afegir_usuaris.resizable(0,0)
-    ventana_afegir_usuaris.geometry("+375+125")
-    titol_usuaris = Label(ventana_afegir_usuaris, text="Afegir usuaris", font=("THIN", 18, "bold"), bg="#8cb3ff")
-    titol_usuaris.place(x=62, y=45)
-    introduir_nom_usuari = Label(ventana_afegir_usuaris, text="Introdueix el nom de l'usuari", font=("THIN", 16), bg="#8cb3ff")
-    introduir_nom_usuari.place(x=17, y= 100)
-    nom_afegir_usuari = Entry(ventana_afegir_usuaris, font=("Calibri", 16), borderwidth=1, relief="solid", bg="#ffffff")
-    nom_afegir_usuari.place(x=35, y=150)
-    boto_afegir_usuaris = Button(ventana_afegir_usuaris, text="Afegeix", fg="#ffee04",bg="#606fff", cursor="hand2",font=("Calibri", 13, "bold"),width=14, borderwidth=0, activebackground="#ffff98", activeforeground="#606fff")
-    boto_afegir_usuaris.place(x=78,y=210 )
-    imatge_usuari = PhotoImage(file="contactes.png")
-    tamany_imatge = imatge_usuari.subsample(2)
-    imatge_ventana = Label(ventana_afegir_usuaris, image=tamany_imatge, bg="#8cb3ff")
-    imatge_ventana.place(x=330, y=10)
-    ventana_afegir_usuaris.mainloop()
+validator_ventana_afegir_usuaris = 0
+def ventana_cerrada():
+    global validator_ventana_afegir_usuaris
+    validator_ventana_afegir_usuaris = 0
+    ventana_afegir_usuaris.destroy()
 
+def windows_afegir_usuaris():
+    global ventana_afegir_usuaris
+    global validator_ventana_afegir_usuaris
+    if validator_ventana_afegir_usuaris == 0:
+        validator_ventana_afegir_usuaris = 1
+        ventana_afegir_usuaris = Toplevel()
+        ventana_afegir_usuaris.geometry("600x300")
+        ventana_afegir_usuaris.config(bg="#8cb3ff")
+        ventana_afegir_usuaris.title("Afegir usuaris")
+        ventana_afegir_usuaris.resizable(0,0)
+        ventana_afegir_usuaris.geometry("+375+125")
+        titol_usuaris = Label(ventana_afegir_usuaris, text="Afegir usuaris", font=("THIN", 18, "bold"), bg="#8cb3ff")
+        titol_usuaris.place(x=62, y=45)
+        introduir_nom_usuari = Label(ventana_afegir_usuaris, text="Introdueix el nom de l'usuari", font=("THIN", 16), bg="#8cb3ff")
+        introduir_nom_usuari.place(x=17, y= 100)
+        nom_afegir_usuari = Entry(ventana_afegir_usuaris, font=("Calibri", 16), borderwidth=1, relief="solid", bg="#ffffff")
+        nom_afegir_usuari.place(x=35, y=150)
+        boto_afegir_usuaris = Button(ventana_afegir_usuaris, text="Afegeix", fg="#ffee04",bg="#606fff", cursor="hand2",font=("Calibri", 13, "bold"),width=14, borderwidth=0, activebackground="#ffff98", activeforeground="#606fff")
+        boto_afegir_usuaris.place(x=78,y=210 )
+        imatge_usuari = PhotoImage(file="contactes.png")
+        tamany_imatge = imatge_usuari.subsample(2)
+        imatge_ventana = Label(ventana_afegir_usuaris, image=tamany_imatge, bg="#8cb3ff")
+        imatge_ventana.place(x=330, y=10)
+        ventana_afegir_usuaris.protocol("WM_DELETE_WINDOW", ventana_cerrada)
+        ventana_afegir_usuaris.mainloop()
+    
 def validacio_conta(name, password):
     #if name == "admin" and password == "admin":
     try:
