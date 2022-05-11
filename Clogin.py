@@ -3,16 +3,16 @@ import socket
 import threading
 
 validator_ventana_ajustes_generales = 0
-def ventana_cerrada_ajustes_generales():
+def destory_ventana_ajustes_generales():
     global validator_ventana_ajustes_generales
     validator_ventana_ajustes_generales = 0
     menu_configuracio.destroy()
 
-def estats(valor):
-        global estat_usuari
-        estat_usuari.config(text=valor)
+def modificacio_estats_usuari(valor):
+    global estat_usuari
+    estat_usuari.config(text=valor)
 
-def configuracio_general_usuari():
+def ventana_configuracio_general_usuari():
     global estat_usuari
     global menu_configuracio
     global validator_ventana_ajustes_generales
@@ -42,11 +42,11 @@ def configuracio_general_usuari():
         estat_usuari = Label(menu_configuracio, bg="#8cb3ff", fg="white", font=("THIN", 14, "bold"), cursor="hand2")
         estat_usuari.place(x=335, y=150)
         menu_estat = Menu(canviar_estat, tearoff=False, bg="#606fff", fg="white")
-        menu_estat.add_radiobutton(label="Desconnectat", font=("THIN", 12, "bold"), command= lambda:estats("Desconnectat"))
-        menu_estat.add_radiobutton(label="Connectat", font=("THIN", 12, "bold"),command= lambda:estats("Connectat"))
-        menu_estat.add_radiobutton(label="Treballant", font=("THIN", 12, "bold"), command= lambda:estats("Treballant"))
-        menu_estat.add_radiobutton(label="Estic en l'escola", font=("THIN", 12, "bold"), command= lambda:estats("Estic a l'escola"))
-        menu_estat.add_radiobutton(label="No molestis", font=("THIN", 12, "bold"), command= lambda:estats("No molestis"))
+        menu_estat.add_radiobutton(label="Desconnectat", font=("THIN", 12, "bold"), command= lambda:modificacio_estats_usuari("Desconnectat"))
+        menu_estat.add_radiobutton(label="Connectat", font=("THIN", 12, "bold"),command= lambda:modificacio_estats_usuari("Connectat"))
+        menu_estat.add_radiobutton(label="Treballant", font=("THIN", 12, "bold"), command= lambda:modificacio_estats_usuari("Treballant"))
+        menu_estat.add_radiobutton(label="Estic en l'escola", font=("THIN", 12, "bold"), command= lambda:modificacio_estats_usuari("Estic a l'escola"))
+        menu_estat.add_radiobutton(label="No molestis", font=("THIN", 12, "bold"), command= lambda:modificacio_estats_usuari("No molestis"))
         canviar_estat["menu"] = menu_estat
         titol_canviar_tema = Label(menu_configuracio, text="Canviar tema", font=("THIN", 12, "bold"), bg="#8cb3ff")
         titol_canviar_tema.place(x=45, y=250)
@@ -95,16 +95,16 @@ def configuracio_general_usuari():
         boto_lila_tema.place(x=403, y=250)
         boto_taronja_tema = Button(menu_configuracio, borderwidth=1, cursor="hand2", relief="solid", width=3, height=1, bg="orange")
         boto_taronja_tema.place(x=432, y=250)
-        menu_configuracio.protocol("WM_DELETE_WINDOW",ventana_cerrada_ajustes_generales)
+        menu_configuracio.protocol("WM_DELETE_WINDOW",destory_ventana_ajustes_generales)
         menu_configuracio.mainloop()
 
 validator_ventana_afegir_usuaris = 0
-def ventana_cerrada_afegir_usuaris():
+def destory_ventana_afegir_usuaris():
     global validator_ventana_afegir_usuaris
     validator_ventana_afegir_usuaris = 0
     ventana_afegir_usuaris.destroy()
 
-def window_afegir_usuaris():
+def finestra_afegir_usuaris():
     global ventana_afegir_usuaris
     global validator_ventana_afegir_usuaris
     if validator_ventana_afegir_usuaris == 0:
@@ -127,7 +127,7 @@ def window_afegir_usuaris():
         tamany_imatge = imatge_usuari.subsample(2)
         imatge_ventana = Label(ventana_afegir_usuaris, image=tamany_imatge, bg="#8cb3ff")
         imatge_ventana.place(x=330, y=10)
-        ventana_afegir_usuaris.protocol("WM_DELETE_WINDOW", ventana_cerrada_afegir_usuaris)
+        ventana_afegir_usuaris.protocol("WM_DELETE_WINDOW", destory_ventana_afegir_usuaris)
         ventana_afegir_usuaris.mainloop()
     
 def validacio_conta(name, password):
@@ -140,7 +140,7 @@ def validacio_conta(name, password):
                 root.destroy()
             except:
                 pass
-            chat_ventana_funcion(name.capitalize())
+            ventana_chat_principal(name.capitalize())
 
 def validacio_conta_registre_sessio(name_registre, password_registre, validator):
     name_registre = name_registre.strip()
@@ -151,9 +151,9 @@ def validacio_conta_registre_sessio(name_registre, password_registre, validator)
                 ventana.destroy()
             except:
                 pass
-            chat_ventana_funcion(name_registre.capitalize())
+            ventana_chat_principal(name_registre.capitalize())
 
-def chat_ventana_funcion(nom_usuari_lateral):
+def ventana_chat_principal(nom_usuari_lateral):
     chat_ventana = Tk()
     chat_ventana.title("Clogin")
     chat_ventana.geometry("1131x668")
@@ -177,12 +177,12 @@ def chat_ventana_funcion(nom_usuari_lateral):
 
     imagen_ajustes_generales_button = PhotoImage(file="botoajustes.png")
     imagen_ajustes_generales_button = imagen_ajustes_generales_button.subsample(23)
-    ajustes_generales_button = Button(frame_lateral, image=imagen_ajustes_generales_button, borderwidth=0, bg="#84C4F4", cursor="hand2", activebackground="#84C4F4", command=configuracio_general_usuari)
+    ajustes_generales_button = Button(frame_lateral, image=imagen_ajustes_generales_button, borderwidth=0, bg="#84C4F4", cursor="hand2", activebackground="#84C4F4", command=ventana_configuracio_general_usuari)
     ajustes_generales_button.place(x=230, y=10)
 
     foto_afegir_contactes = PhotoImage(file="adduser.png")
     foto_afegir_contactes = foto_afegir_contactes.subsample(23)
-    afegir_contactes = Button(frame_lateral, image=foto_afegir_contactes, borderwidth=0, bg="#84C4F4", cursor="hand2", activebackground="#84C4F4", command=window_afegir_usuaris)
+    afegir_contactes = Button(frame_lateral, image=foto_afegir_contactes, borderwidth=0, bg="#84C4F4", cursor="hand2", activebackground="#84C4F4", command=finestra_afegir_usuaris)
     afegir_contactes.place(x=195, y=10)
 
     label_tu_cuenta = Label(frame_lateral, text="Has iniciat sessió amb:", font=("Calibri", 16, "bold"), bg="#84C4F4", fg="black")
@@ -237,7 +237,7 @@ def chat_ventana_funcion(nom_usuari_lateral):
 
     chat_ventana.mainloop()
 
-def registredesessio():
+def ventana_registredesessio():
     global ventana
     global inpnom
     root.destroy()
@@ -279,12 +279,12 @@ def registredesessio():
     imatgeenrere = PhotoImage(file="enrere.png")
     imatgeenrere = imatgeenrere.subsample(10)
 
-    enrere = Button(ventana, command=inicidesessio, image = imatgeenrere, borderwidth=0, bg="#FFFFFF", cursor="hand2")
+    enrere = Button(ventana, command=ventana_inicidesessio, image = imatgeenrere, borderwidth=0, bg="#FFFFFF", cursor="hand2")
     enrere.place(x=12, y=20)
 
     ventana.mainloop()
 
-def inicidesessio():
+def ventana_inicidesessio():
     global root
     global inp_nom
     try:
@@ -322,7 +322,7 @@ def inicidesessio():
     lab_register = Label(root, text="No tens compte?", font=("THIN", 14, "underline"), bg="#FFFFFF")
     lab_register.place(x=35, y=530)
 
-    button_register = Button(root, text="Registra't", fg="#ffee04", bg="#606fff", cursor="hand2", font=("Calibri", 15, "bold"), width=16, borderwidth=0, command=registredesessio, activebackground="#ffff98", activeforeground="#606fff")
+    button_register = Button(root, text="Registra't", fg="#ffee04", bg="#606fff", cursor="hand2", font=("Calibri", 15, "bold"), width=16, borderwidth=0, command=ventana_registredesessio, activebackground="#ffff98", activeforeground="#606fff")
     button_register.place(x=195, y=525)
     
     root.mainloop()     
@@ -350,5 +350,5 @@ def confirmacio_nom_usuari_tretze_registre_sessio(nom_confirmer, contraseña_con
 
     validacio_conta_registre_sessio(nom_confirmer, contraseña_confirmer, validator_registre)
 
-inicidesessio()
+ventana_inicidesessio()
 
