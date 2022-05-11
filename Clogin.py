@@ -326,7 +326,7 @@ def confirmacio_contrasenya(nom_confirmer, contraseña_confirmer, repeteix_contr
 
 def confirmacio_nom_usuari_tretze():
     validator_nom_tretze_usuari = False
-    if len(inp_nom.get()) > 1:
+    if len(inp_nom.get()) > 13:
         error_nom_usuari = Label(root, text="Hi han més de 13 caràcters", font=("Calibri", 12, "bold"), fg="red", bg="white")
         error_nom_usuari.place(x=100, y=235)
         validator_nom_tretze_usuari = True
