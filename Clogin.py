@@ -9,7 +9,6 @@ def connexio_client_servidor():
     ip_servidor_socket = "172.21.233.33"
     usuari_client.connect((ip_servidor_socket, 8432))
 
-
 #------------------------------------------------------------------------------------------------------------------------------
 
 
@@ -247,8 +246,8 @@ def ventana_chat_principal(nom_usuari_lateral):
     menu.add_radiobutton(label="Ancorar", font=("Calibri", 13, "bold"))
     label_ajustes_button["menu"] = menu
 
-    conversa_del_chat = Text(frame_conversa, font=("Calibri", 15), width=83, height=23, bg="white",borderwidth=0)
-    conversa_del_chat.place(x=0, y=78)
+    frame_conversa_del_chat = Frame(frame_conversa, width=859, height=556, bg="red",borderwidth=0)
+    frame_conversa_del_chat.place(x=0, y=78)
 
     # ----------------------------------------------------------------------------------------------------------
 
