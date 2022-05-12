@@ -2,6 +2,20 @@ from tkinter import *
 import socket
 import threading
 
+#SOCKET -----------------------------------------------------------------------------------------------------------------------
+
+def connexio_client_servidor():
+    usuari_client = socket.socket()
+    ip_servidor_socket = "172.21.233.33"
+    usuari_client.connect((ip_servidor_socket, 8432))
+
+
+#------------------------------------------------------------------------------------------------------------------------------
+
+
+#TKINTER (DISENY DE L'APLICACIÓ) ----------------------------------------------------------------------------------------------
+
+
 validator_ventana_ajustes_generales = 0
 def destory_ventana_ajustes_generales():
     global validator_ventana_ajustes_generales
@@ -203,7 +217,7 @@ def ventana_chat_principal(nom_usuari_lateral):
     frame_conversa = Frame(chat_ventana, bg="#ffffff", width=863, height=668, borderwidth=2, relief="solid")
     frame_conversa.place(x=268)
 
-    frame_usuari = Frame(frame_conversa, bg="#4682B4", width=859, height=80, borderwidth=0)
+    frame_usuari = Frame(frame_conversa, bg="#4682B4", width=859, height=78, borderwidth=0)
     frame_usuari.place(x=0)
 
     nom_usuari = Label(frame_usuari, bg="#4682B4", text="Usuari", font=("Calibri", 20, "bold"))
@@ -232,6 +246,9 @@ def ventana_chat_principal(nom_usuari_lateral):
     menu.add_radiobutton(label="Arxivar", font=("Calibri", 13, "bold"))
     menu.add_radiobutton(label="Ancorar", font=("Calibri", 13, "bold"))
     label_ajustes_button["menu"] = menu
+
+    conversa_del_chat = Text(frame_conversa, font=("Calibri", 15), width=83, height=23, bg="white",borderwidth=0)
+    conversa_del_chat.place(x=0, y=78)
 
     # ----------------------------------------------------------------------------------------------------------
 
@@ -351,4 +368,6 @@ def confirmacio_nom_usuari_tretze_registre_sessio(nom_confirmer, contraseña_con
     validacio_conta_registre_sessio(nom_confirmer, contraseña_confirmer, validator_registre)
 
 ventana_inicidesessio()
+
+#------------------------------------------------------------------------------------------------------------------------
 
