@@ -246,9 +246,17 @@ def ventana_chat_principal(nom_usuari_lateral):
     menu.add_radiobutton(label="Ancorar", font=("Calibri", 13, "bold"))
     label_ajustes_button["menu"] = menu
 
-    frame_conversa_del_chat = Frame(frame_conversa, width=859, height=556, bg="red",borderwidth=0)
+    frame_conversa_del_chat = Frame(frame_conversa, width=859, height=556, bg="white",borderwidth=0)
     frame_conversa_del_chat.place(x=0, y=78)
 
+    scroll_widget_conversa = Scrollbar(frame_conversa_del_chat)
+    scroll_widget_conversa.pack(side=RIGHT, fill=Y)
+
+    widget_text_conversa = Text(frame_conversa_del_chat, width=76, height=24, bg="white", borderwidth=0, font=("THIN", 15))
+    widget_text_conversa.pack(side=LEFT, fill=Y)
+
+    scroll_widget_conversa.config(command=widget_text_conversa.yview)
+    widget_text_conversa.config(yscrollcommand=scroll_widget_conversa.set)
     # ----------------------------------------------------------------------------------------------------------
 
     chat_ventana.mainloop()
