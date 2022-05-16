@@ -1,19 +1,22 @@
+from ast import Try
 from tkinter import *
 import socket
 import threading
 
 #SOCKET -----------------------------------------------------------------------------------------------------------------------
 
-def connexio_client_servidor():
+def connexio_client_servidor(nombre_cliente):
+    global usuari_client
     usuari_client = socket.socket()
     ip_servidor_socket = "172.21.233.33"
     usuari_client.connect((ip_servidor_socket, 8432))
-
+    usuari_client.send(nombre_cliente.encode())
+    resposta = usuari_client.recv(1024)
+    resposta = resposta.decode()
+    return resposta
 #------------------------------------------------------------------------------------------------------------------------------
 
-
 #TKINTER (DISENY DE L'APLICACIÓ) ----------------------------------------------------------------------------------------------
-
 
 validator_ventana_ajustes_generales = 0
 def destory_ventana_ajustes_generales():
@@ -150,10 +153,13 @@ def validacio_conta(name, password):
         nom_tretze = confirmacio_nom_usuari_tretze()
         if nom_tretze == False:
             try:
-                root.destroy()
+                conn = connexio_client_servidor(name)
             except:
-                pass
-            ventana_chat_principal(name.capitalize())
+                conn = "Error"
+                    
+            if conn == "Correct":
+                root.destroy()
+                ventana_chat_principal(name.capitalize())
 
 def validacio_conta_registre_sessio(name_registre, password_registre, validator):
     name_registre = name_registre.strip()
@@ -167,6 +173,9 @@ def validacio_conta_registre_sessio(name_registre, password_registre, validator)
             ventana_chat_principal(name_registre.capitalize())
 
 def ventana_chat_principal(nom_usuari_lateral):
+    global nom_usuari
+    global widget_text_conversa
+    global chat_ventana
     chat_ventana = Tk()
     chat_ventana.title("Clogin")
     chat_ventana.geometry("1131x668")
@@ -209,6 +218,12 @@ def ventana_chat_principal(nom_usuari_lateral):
     my_name = Label(frame_lateral, text=nom_usuari_lateral, font=("Calibri", 15, "bold"), bg="#84C4F4")
     my_name.place(x=125, y=110)
 
+    contacts_label = Label(frame_lateral, text="Contactes:", font=("Calibri", 16, "bold"), bg="#84C4F4")
+    contacts_label.place(x=85, y=170)
+
+    conntacte_prova = Button(frame_lateral, text="Aimar", font=("Calibri", 13, "bold"), bg="#ffee04", width=25, command=nom_conversa_usuari, borderwidth=1, relief="solid")
+    conntacte_prova.place(x=15, y=210)
+
     # ----------------------------------------------------------------------------------------------------------
 
     # Frame Conversa -------------------------------------------------------------------------------------------
@@ -230,7 +245,7 @@ def ventana_chat_principal(nom_usuari_lateral):
     inp_chat = Entry(frame_conversa, font=("THIN", 19), bg="#2C3E50", fg="#ffffff", width=55, borderwidth=0)
     inp_chat.place(x=0, y=634)
 
-    send_button = Button(frame_conversa, font=("THIN", 13), bg="#1A5276", text=">>", borderwidth=0, width=9)
+    send_button = Button(frame_conversa, font=("THIN", 13), bg="#1A5276", text=">>", borderwidth=0, width=9, command=lambda:enviar_missatge("Aimar", inp_chat.get()))
     send_button.place(x=772, y=634)
 
     frame_per_omplir_boto = Frame(frame_conversa, bg="#1A5276", borderwidth=3, width=87)
@@ -260,6 +275,31 @@ def ventana_chat_principal(nom_usuari_lateral):
     # ----------------------------------------------------------------------------------------------------------
 
     chat_ventana.mainloop()
+
+
+def nom_conversa_usuari():
+    nom_usuari.config(text="Aimar")
+
+
+
+def enviar_missatge(usuari, missatge):
+    if usuari != "Usuari":
+        try:
+            usuari_client.send("{},{}".format(usuari, missatge).encode())
+            widget_text_conversa.insert(INSERT, "Tú >> {}".format(missatge))
+            widget_text_conversa.see(END)
+        except:
+            print("No se puede enviar el mensaje porque tu companyero no està connectado")
+            
+def recibir_mensajes():
+    try:
+        mensaje_amigo = usuari_client.recv(1024)
+        mensaje_amigo = mensaje_amigo.decode()
+        widget_text_conversa.insert(INSERT, "Aimar >> {}".format(mensaje_amigo))
+        widget_text_conversa.see(END)
+    except:
+        pass
+
 
 def ventana_registredesessio():
     global ventana
@@ -376,5 +416,6 @@ def confirmacio_nom_usuari_tretze_registre_sessio(nom_confirmer, contraseña_con
 
 ventana_inicidesessio()
 
+chat_ventana.after(200, recibir_mensajes)
 #------------------------------------------------------------------------------------------------------------------------
 
