@@ -188,7 +188,10 @@ def recibir_mensajes():
             pass
 
 def enviar_missatge(usuari, missatge):
-    client_clogin.send("{},{}".format(usuari,missatge).encode()) 
+    try:
+        client_clogin.send("{},{}".format(usuari,missatge).encode()) 
+    except:
+        pass
     widget_text_conversa.insert(INSERT, "Tú >> {}".format(missatge))
     widget_text_conversa.see(END)
     inp_chat.delete(0, "end")
