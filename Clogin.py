@@ -188,13 +188,10 @@ def recibir_mensajes():
             pass
 
 def enviar_missatge(usuari, missatge):
-        try:
-            client_clogin.send("{},{}".format(missatge.encode())) 
-        except:
-            pass
-        widget_text_conversa.insert(INSERT, "Tú >> {}".format(missatge))
-        widget_text_conversa.see(END)
-        inp_chat.delete(0, "end")
+    client_clogin.send("{},{}".format(usuari,missatge).encode()) 
+    widget_text_conversa.insert(INSERT, "Tú >> {}".format(missatge))
+    widget_text_conversa.see(END)
+    inp_chat.delete(0, "end")
 
 #-----------------------------------------------------------------------------------------------------------------------------------------
 
@@ -301,9 +298,9 @@ def ventana_chat_principal(nom_usuari_lateral):
     scroll_widget_conversa.config(command=widget_text_conversa.yview)
     widget_text_conversa.config(yscrollcommand=scroll_widget_conversa.set)
     # ----------------------------------------------------------------------------------------------------------
-    #hilo_recive_msj = threading.Thread(target=recibir_mensajes)
-    #hilo_recive_msj.daemon = True
-    #hilo_recive_msj.start()
+    hilo_recive_msj = threading.Thread(target=recibir_mensajes)
+    hilo_recive_msj.daemon = True
+    hilo_recive_msj.start()
     chat_ventana.mainloop()
     
 def ventana_registredesessio():
