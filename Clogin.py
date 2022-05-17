@@ -281,7 +281,10 @@ def ventana_chat_principal(nom_usuari_lateral):
 
 def nom_conversa_usuari():
     global name_user
+    global nom_usuari
     name_user = "Aimar"
+    nom_usuari.config(text=name_user)
+    
 
 def enviar_missatge(usuari, missatge):
     global usuari_client
