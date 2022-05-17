@@ -3,14 +3,13 @@ import socket
 import threading
 
 #SOCKET CONEXIÓ CLIENT -----------------------------------------------------------------------------------------------------------------------
+client_clogin = socket.socket()
+ip_servidor_socket = "127.0.0.1"
 
-def connexio_client_servidor(nombre_cliente):
-    global usuari_client
-    usuari_client = socket.socket()
-    ip_servidor_socket = "172.21.233.33"
-    usuari_client.connect((ip_servidor_socket, 8432))
-    usuari_client.send(nombre_cliente.encode())
-    resposta = usuari_client.recv(1024)
+def connexio_client_servidor(nombre_cliente):    
+    client_clogin.connect((ip_servidor_socket, 8432))
+    client_clogin.send(nombre_cliente.encode())
+    resposta = client_clogin.recv(1024)
     resposta = resposta.decode()
     return resposta
 #------------------------------------------------------------------------------------------------------------------------------
@@ -178,28 +177,24 @@ def nom_conversa_usuari():
     nom_usuari.config(text=name_user)
 
 # socket -------------------------------------------------------------------------------------------------------------------------------
-
-def enviar_missatge(usuari, missatge):
-    global usuari_client
-    if usuari != "Usuari":
-        try:
-            usuari_client.send("{},{}".format(usuari, missatge).encode())
-            widget_text_conversa.insert(INSERT, "Tú >> {}".format(missatge))
-            widget_text_conversa.see(END)
-        except:
-            pass
-
 def recibir_mensajes():
-    global usuari_client
-    global name_user
     while True:
         try:
-            mensaje_amigo = usuari_client.recv(1024)
+            mensaje_amigo = client_clogin.recv(1024)
             mensaje_amigo = mensaje_amigo.decode()
             widget_text_conversa.insert(INSERT, "{} >> {}".format(name_user,mensaje_amigo))
             widget_text_conversa.see(END)
         except:
             pass
+
+def enviar_missatge(usuari, missatge):
+        try:
+            client_clogin.send("{},{}".format(missatge.encode())) 
+        except:
+            pass
+        widget_text_conversa.insert(INSERT, "Tú >> {}".format(missatge))
+        widget_text_conversa.see(END)
+        inp_chat.delete(0, "end")
 
 #-----------------------------------------------------------------------------------------------------------------------------------------
 
@@ -208,6 +203,7 @@ def ventana_chat_principal(nom_usuari_lateral):
     global widget_text_conversa
     global chat_ventana
     global name_user
+    global inp_chat
 
     name_user = "Usuari"
     chat_ventana = Tk()
@@ -258,8 +254,6 @@ def ventana_chat_principal(nom_usuari_lateral):
     conntacte_prova = Button(frame_lateral, text="Aimar", font=("Calibri", 13, "bold"), bg="#ffee04", width=25, command=nom_conversa_usuari, borderwidth=1, relief="solid")
     conntacte_prova.place(x=15, y=210)
 
-    # ----------------------------------------------------------------------------------------------------------
-
     # Frame Conversa -------------------------------------------------------------------------------------------
 
     frame_conversa = Frame(chat_ventana, bg="#ffffff", width=863, height=668, borderwidth=2, relief="solid")
@@ -307,9 +301,9 @@ def ventana_chat_principal(nom_usuari_lateral):
     scroll_widget_conversa.config(command=widget_text_conversa.yview)
     widget_text_conversa.config(yscrollcommand=scroll_widget_conversa.set)
     # ----------------------------------------------------------------------------------------------------------
-    hilo_recive_msj = threading.Thread(target=recibir_mensajes)
-    hilo_recive_msj.daemon = True
-    hilo_recive_msj.start()
+    #hilo_recive_msj = threading.Thread(target=recibir_mensajes)
+    #hilo_recive_msj.daemon = True
+    #hilo_recive_msj.start()
     chat_ventana.mainloop()
     
 def ventana_registredesessio():
