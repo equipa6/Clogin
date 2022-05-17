@@ -1,9 +1,6 @@
-from ast import Try
-from html.entities import name2codepoint
 from tkinter import *
 import socket
 import threading
-from unicodedata import name
 
 #SOCKET -----------------------------------------------------------------------------------------------------------------------
 
@@ -174,8 +171,6 @@ def validacio_conta_registre_sessio(name_registre, password_registre, validator)
                 pass
             ventana_chat_principal(name_registre.capitalize())
 
-
-
 def ventana_chat_principal(nom_usuari_lateral):
     global nom_usuari
     global widget_text_conversa
@@ -280,9 +275,9 @@ def ventana_chat_principal(nom_usuari_lateral):
     scroll_widget_conversa.config(command=widget_text_conversa.yview)
     widget_text_conversa.config(yscrollcommand=scroll_widget_conversa.set)
     # ----------------------------------------------------------------------------------------------------------
-    chat_ventana.after(10, recibir_mensajes)
+    hilo_recive_msj = threading.Thread(target=recibir_mensajes)
+    hilo_recive_msj.start()
     chat_ventana.mainloop()
-
 
 def nom_conversa_usuari():
     global name_user
@@ -302,15 +297,14 @@ def recibir_mensajes():
     global usuari_client
     global name_user
     global chat_ventana
-    try:
-        mensaje_amigo = usuari_client.recv(1024)
-        mensaje_amigo = mensaje_amigo.decode()
-        widget_text_conversa.insert(INSERT, "{} >> {}".format(name_user,mensaje_amigo))
-        widget_text_conversa.see(END)
-    except:
-        pass
-    chat_ventana.after(10, recibir_mensajes)
-
+    while True:
+        try:
+            mensaje_amigo = usuari_client.recv(1024)
+            mensaje_amigo = mensaje_amigo.decode()
+            widget_text_conversa.insert(INSERT, "{} >> {}".format(name_user,mensaje_amigo))
+            widget_text_conversa.see(END)
+        except:
+            pass
 
 def ventana_registredesessio():
     global ventana
