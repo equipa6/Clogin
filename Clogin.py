@@ -2,7 +2,7 @@ from tkinter import *
 import socket
 import threading
 
-#SOCKET -----------------------------------------------------------------------------------------------------------------------
+#SOCKET CONEXIÓ CLIENT -----------------------------------------------------------------------------------------------------------------------
 
 def connexio_client_servidor(nombre_cliente):
     global usuari_client
@@ -171,6 +171,38 @@ def validacio_conta_registre_sessio(name_registre, password_registre, validator)
                 pass
             ventana_chat_principal(name_registre.capitalize())
 
+def nom_conversa_usuari():
+    global name_user
+    global nom_usuari
+    name_user = "Aimar"
+    nom_usuari.config(text=name_user)
+
+# socket -------------------------------------------------------------------------------------------------------------------------------
+
+def enviar_missatge(usuari, missatge):
+    global usuari_client
+    if usuari != "Usuari":
+        try:
+            usuari_client.send("{},{}".format(usuari, missatge).encode())
+            widget_text_conversa.insert(INSERT, "Tú >> {}".format(missatge))
+            widget_text_conversa.see(END)
+        except:
+            pass
+
+def recibir_mensajes():
+    global usuari_client
+    global name_user
+    while True:
+        try:
+            mensaje_amigo = usuari_client.recv(1024)
+            mensaje_amigo = mensaje_amigo.decode()
+            widget_text_conversa.insert(INSERT, "{} >> {}".format(name_user,mensaje_amigo))
+            widget_text_conversa.see(END)
+        except:
+            pass
+
+#-----------------------------------------------------------------------------------------------------------------------------------------
+
 def ventana_chat_principal(nom_usuari_lateral):
     global nom_usuari
     global widget_text_conversa
@@ -276,39 +308,10 @@ def ventana_chat_principal(nom_usuari_lateral):
     widget_text_conversa.config(yscrollcommand=scroll_widget_conversa.set)
     # ----------------------------------------------------------------------------------------------------------
     hilo_recive_msj = threading.Thread(target=recibir_mensajes)
+    hilo_recive_msj.daemon = True
     hilo_recive_msj.start()
     chat_ventana.mainloop()
-
-def nom_conversa_usuari():
-    global name_user
-    global nom_usuari
-    name_user = "Aimar"
-    nom_usuari.config(text=name_user)
     
-
-def enviar_missatge(usuari, missatge):
-    global usuari_client
-    if usuari != "Usuari":
-        try:
-            usuari_client.send("{},{}".format(usuari, missatge).encode())
-            widget_text_conversa.insert(INSERT, "Tú >> {}".format(missatge))
-            widget_text_conversa.see(END)
-        except:
-            pass
-            
-def recibir_mensajes():
-    global usuari_client
-    global name_user
-    global chat_ventana
-    while True:
-        try:
-            mensaje_amigo = usuari_client.recv(1024)
-            mensaje_amigo = mensaje_amigo.decode()
-            widget_text_conversa.insert(INSERT, "{} >> {}".format(name_user,mensaje_amigo))
-            widget_text_conversa.see(END)
-        except:
-            pass
-
 def ventana_registredesessio():
     global ventana
     global inpnom
