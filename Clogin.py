@@ -1,7 +1,9 @@
 from ast import Try
+from html.entities import name2codepoint
 from tkinter import *
 import socket
 import threading
+from unicodedata import name
 
 #SOCKET -----------------------------------------------------------------------------------------------------------------------
 
@@ -172,10 +174,15 @@ def validacio_conta_registre_sessio(name_registre, password_registre, validator)
                 pass
             ventana_chat_principal(name_registre.capitalize())
 
+
+
 def ventana_chat_principal(nom_usuari_lateral):
     global nom_usuari
     global widget_text_conversa
     global chat_ventana
+    global name_user
+
+    name_user = "Usuari"
     chat_ventana = Tk()
     chat_ventana.title("Clogin")
     chat_ventana.geometry("1131x668")
@@ -234,7 +241,7 @@ def ventana_chat_principal(nom_usuari_lateral):
     frame_usuari = Frame(frame_conversa, bg="#4682B4", width=859, height=78, borderwidth=0)
     frame_usuari.place(x=0)
 
-    nom_usuari = Label(frame_usuari, bg="#4682B4", text="Usuari", font=("Calibri", 20, "bold"))
+    nom_usuari = Label(frame_usuari, bg="#4682B4", text=name_user, font=("Calibri", 20, "bold"))
     nom_usuari.place(x=70, y=18)
 
     foto_usuari_perfil = PhotoImage(file="foto_perfil.png")
@@ -245,7 +252,7 @@ def ventana_chat_principal(nom_usuari_lateral):
     inp_chat = Entry(frame_conversa, font=("THIN", 19), bg="#2C3E50", fg="#ffffff", width=55, borderwidth=0)
     inp_chat.place(x=0, y=634)
 
-    send_button = Button(frame_conversa, font=("THIN", 13), bg="#1A5276", text=">>", borderwidth=0, width=9, command=lambda:enviar_missatge("Aimar", inp_chat.get()))
+    send_button = Button(frame_conversa, font=("THIN", 13), bg="#1A5276", text=">>", borderwidth=0, width=9, command=lambda:enviar_missatge(name_user, inp_chat.get()))
     send_button.place(x=772, y=634)
 
     frame_per_omplir_boto = Frame(frame_conversa, bg="#1A5276", borderwidth=3, width=87)
@@ -273,32 +280,36 @@ def ventana_chat_principal(nom_usuari_lateral):
     scroll_widget_conversa.config(command=widget_text_conversa.yview)
     widget_text_conversa.config(yscrollcommand=scroll_widget_conversa.set)
     # ----------------------------------------------------------------------------------------------------------
-
+    chat_ventana.after(10, recibir_mensajes)
     chat_ventana.mainloop()
 
 
 def nom_conversa_usuari():
-    nom_usuari.config(text="Aimar")
-
-
+    global name_user
+    name_user = "Aimar"
 
 def enviar_missatge(usuari, missatge):
+    global usuari_client
     if usuari != "Usuari":
         try:
             usuari_client.send("{},{}".format(usuari, missatge).encode())
             widget_text_conversa.insert(INSERT, "Tú >> {}".format(missatge))
             widget_text_conversa.see(END)
         except:
-            print("No se puede enviar el mensaje porque tu companyero no està connectado")
+            pass
             
 def recibir_mensajes():
+    global usuari_client
+    global name_user
+    global chat_ventana
     try:
         mensaje_amigo = usuari_client.recv(1024)
         mensaje_amigo = mensaje_amigo.decode()
-        widget_text_conversa.insert(INSERT, "Aimar >> {}".format(mensaje_amigo))
+        widget_text_conversa.insert(INSERT, "{} >> {}".format(name_user,mensaje_amigo))
         widget_text_conversa.see(END)
     except:
         pass
+    chat_ventana.after(10, recibir_mensajes)
 
 
 def ventana_registredesessio():
@@ -415,7 +426,5 @@ def confirmacio_nom_usuari_tretze_registre_sessio(nom_confirmer, contraseña_con
     validacio_conta_registre_sessio(nom_confirmer, contraseña_confirmer, validator_registre)
 
 ventana_inicidesessio()
-
-chat_ventana.after(200, recibir_mensajes)
 #------------------------------------------------------------------------------------------------------------------------
 
