@@ -172,29 +172,46 @@ def validacio_conta_registre_sessio(name_registre, password_registre, validator)
 
 def nom_conversa_usuari():
     global name_user
-    global nom_usuari
     name_user = "Aimar"
     nom_usuari.config(text=name_user)
 
 # socket -------------------------------------------------------------------------------------------------------------------------------
+
+first_msj = 0
+
 def recibir_mensajes():
+    global first_msj
     while True:
         try:
             mensaje_amigo = client_clogin.recv(1024)
             mensaje_amigo = mensaje_amigo.decode()
-            widget_text_conversa.insert(INSERT, "{} >> {}".format(name_user,mensaje_amigo))
-            widget_text_conversa.see(END)
+            if first_msj == 0:
+                widget_text_conversa.insert(INSERT, "{} >> {}".format(name_user,mensaje_amigo))
+                first_msj = 1
+            else:
+                widget_text_conversa.insert(INSERT, "\n{} >> {}".format(name_user,mensaje_amigo))
         except:
             pass
 
 def enviar_missatge(usuari, missatge):
+    global first_msj
     try:
-        client_clogin.send("{},{}".format(usuari,missatge).encode()) 
+        client_clogin.send("{},{}".format(usuari,missatge).encode())
+        if first_msj == 0:
+            widget_text_conversa.insert(INSERT, "Tú >> {}".format(missatge))
+            inp_chat.delete(0, "end")
+            first_msj = 1
+        else:
+            widget_text_conversa.insert(INSERT, "\nTú >> {}".format(missatge))
+            inp_chat.delete(0, "end") 
     except:
-        pass
-    widget_text_conversa.insert(INSERT, "Tú >> {}".format(missatge))
-    widget_text_conversa.see(END)
-    inp_chat.delete(0, "end")
+        if first_msj == 0:
+            widget_text_conversa.insert(INSERT, "(NO SE HA PODIDO ENVIAR EL MENSAJE) Tú >> {}".format(missatge))
+            inp_chat.delete(0, "end")
+            first_msj = 1
+        else:
+            widget_text_conversa.insert(INSERT, "\n(NO SE HA PODIDO ENVIAR EL MENSAJE) Tú >> {}".format(missatge))
+            inp_chat.delete(0, "end") 
 
 #-----------------------------------------------------------------------------------------------------------------------------------------
 
