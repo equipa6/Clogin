@@ -1,6 +1,7 @@
 from tkinter import *
 import socket
 import threading
+from tkinter import ttk
 
 #SOCKET CONEXIÓ CLIENT -----------------------------------------------------------------------------------------------------------------------
 client_clogin = socket.socket()
@@ -12,7 +13,6 @@ def connexio_client_servidor(nombre_cliente):
     resposta = client_clogin.recv(1024)
     resposta = resposta.decode()
     return resposta
-#------------------------------------------------------------------------------------------------------------------------------
 
 #TKINTER (DISENY DE L'APLICACIÓ) ----------------------------------------------------------------------------------------------
 
@@ -118,6 +118,21 @@ def destory_ventana_afegir_usuaris():
     validator_ventana_afegir_usuaris = 0
     ventana_afegir_usuaris.destroy()
 
+def nom_conversa_usuari(nombre):
+    name_user = nombre
+    nom_usuari.config(text=name_user)
+
+filas_contactos = 0
+def boto_nou_usuari(nom_del_usuari):
+    global filas_contactos
+    nom_del_usuari = nom_del_usuari.strip()
+    if nom_del_usuari != "":
+        lletres_vermelles = Label(ventana_afegir_usuaris, text="Contacte afegit!", font=("THIN", 12, "bold"), fg="black", bg="#8cb3ff")
+        lletres_vermelles.place(x=80, y=180)
+        Button(sframe, text=nom_del_usuari, width=20, font=("Calibri", 13, "bold"), borderwidth=1, relief="solid", bg="#606fff", cursor="hand2",fg="#ffee04", command=lambda nom_del_usuari=nom_del_usuari:nom_conversa_usuari(nom_del_usuari)).grid(row=filas_contactos, column=1, pady=15, padx=(5, 0))
+        Label(sframe, image=foto_usuari_perfil_lateral_2, borderwidth=0, bg="#84C4F4").grid(row=filas_contactos, column=0, pady=15)
+        filas_contactos += 1
+
 def finestra_afegir_usuaris():
     global ventana_afegir_usuaris
     global validator_ventana_afegir_usuaris
@@ -135,7 +150,7 @@ def finestra_afegir_usuaris():
         introduir_nom_usuari.place(x=17, y= 100)
         nom_afegir_usuari = Entry(ventana_afegir_usuaris, font=("Calibri", 16), borderwidth=1, relief="solid", bg="#ffffff")
         nom_afegir_usuari.place(x=35, y=150)
-        boto_afegir_usuaris = Button(ventana_afegir_usuaris, text="Afegeix", fg="#ffee04",bg="#606fff", cursor="hand2",font=("Calibri", 13, "bold"),width=14, borderwidth=0, activebackground="#ffff98", activeforeground="#606fff")
+        boto_afegir_usuaris = Button(ventana_afegir_usuaris, text="Afegeix", fg="#ffee04",bg="#606fff", cursor="hand2",font=("Calibri", 13, "bold"),width=14, borderwidth=0, activebackground="#ffff98", activeforeground="#606fff", command=lambda:boto_nou_usuari(nom_afegir_usuari.get()))
         boto_afegir_usuaris.place(x=78,y=210 )
         imatge_usuari = PhotoImage(file="contactes.png")
         tamany_imatge = imatge_usuari.subsample(2)
@@ -169,11 +184,6 @@ def validacio_conta_registre_sessio(name_registre, password_registre, validator)
             except:
                 pass
             ventana_chat_principal(name_registre.capitalize())
-
-def nom_conversa_usuari():
-    global name_user
-    name_user = "Aimar"
-    nom_usuari.config(text=name_user)
 
 # socket -------------------------------------------------------------------------------------------------------------------------------
 
@@ -221,6 +231,8 @@ def ventana_chat_principal(nom_usuari_lateral):
     global chat_ventana
     global name_user
     global inp_chat
+    global sframe
+    global foto_usuari_perfil_lateral_2
 
     name_user = "Usuari"
     chat_ventana = Tk()
@@ -268,8 +280,30 @@ def ventana_chat_principal(nom_usuari_lateral):
     contacts_label = Label(frame_lateral, text="Contactes:", font=("Calibri", 16, "bold"), bg="#84C4F4")
     contacts_label.place(x=85, y=170)
 
-    conntacte_prova = Button(frame_lateral, text="Aimar", font=("Calibri", 13, "bold"), bg="#ffee04", width=25, command=nom_conversa_usuari, borderwidth=1, relief="solid")
-    conntacte_prova.place(x=15, y=210)
+    frame_usuaris_afegits = Frame(frame_lateral, bg="#84C4F4", width=266, height=464, borderwidth=0)
+    frame_usuaris_afegits.place(x=0, y=200)
+
+    main_frame = Frame(frame_usuaris_afegits, bg="#84C4F4")
+    main_frame.pack(fill=BOTH, expand=1)
+
+    canvas = Canvas(main_frame, bg="#84C4F4", width=250, height=464, highlightthickness=0, relief="ridge")
+    canvas.pack(side=LEFT, fill=BOTH, expand=1)
+
+    scroll = ttk.Scrollbar(main_frame, orient=VERTICAL,command=canvas.yview)
+    scroll.pack(side=RIGHT, fill=Y)
+
+    canvas.configure(yscrollcommand=scroll.set)
+    canvas.bind("<Configure>", lambda e:canvas.configure(scrollregion=canvas.bbox("all")))
+
+    sframe = Frame(canvas, bg="#84C4F4")
+    canvas.create_window((0, 0), window=sframe, anchor="nw")
+
+    foto_usuari_perfil_lateral_2 = PhotoImage(file="contactes.png")
+    foto_usuari_perfil_lateral_2 = foto_usuari_perfil_lateral_2.subsample(11)
+    #Button(sframe, text="", width=20, font=("Calibri", 13, "bold"), borderwidth=0, bg="#84C4F4").grid(row=i, column=1, pady=15, padx=(5, 0))
+
+    for i in range(100):
+        Label(sframe, text="", font=("Calibri", 13, "bold"), borderwidth=0, bg="#84C4F4").grid(row=i, column=1, pady=15, padx=(5, 0))
 
     # Frame Conversa -------------------------------------------------------------------------------------------
 
