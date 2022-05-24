@@ -187,6 +187,8 @@ def destory_ventana_afegir_usuaris():
     ventana_afegir_usuaris.destroy()
 
 def nom_conversa_usuari(nombre):
+    global name_user
+    global nom_usuari
     name_user = nombre
     nom_usuari.config(text=name_user)
 
