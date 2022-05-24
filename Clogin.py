@@ -189,6 +189,9 @@ def destory_ventana_afegir_usuaris():
 def nom_conversa_usuari(nombre):
     global name_user
     global nom_usuari
+    widget_text_conversa.config(state=NORMAL)
+    widget_text_conversa.delete("1.0", "end")
+    widget_text_conversa.config(state=DISABLED)
     name_user = nombre
     nom_usuari.config(text=name_user)
 
@@ -265,10 +268,14 @@ def recibir_mensajes():
             mensaje_amigo = client_clogin.recv(1024)
             mensaje_amigo = mensaje_amigo.decode()
             if first_msj == 0:
+                widget_text_conversa.config(state=NORMAL)
                 widget_text_conversa.insert(INSERT, "{} >> {}".format(name_user,mensaje_amigo))
+                widget_text_conversa.config(state=DISABLED)
                 first_msj = 1
             else:
+                widget_text_conversa.config(state=NORMAL)
                 widget_text_conversa.insert(INSERT, "\n\n{} >> {}".format(name_user,mensaje_amigo))
+                widget_text_conversa.config(state=DISABLED)
         except:
             pass
 
@@ -279,20 +286,28 @@ def enviar_missatge(usuari, missatge):
         try:
             client_clogin.send("{},{}".format(usuari,missatge).encode())
             if first_msj == 0:
+                widget_text_conversa.config(state=NORMAL)
                 widget_text_conversa.insert(INSERT, "Tú >> {}".format(missatge))
                 inp_chat.delete(0, "end")
+                widget_text_conversa.config(state=DISABLED)
                 first_msj = 1
             else:
+                widget_text_conversa.config(state=NORMAL)
                 widget_text_conversa.insert(INSERT, "\n\nTú >> {}".format(missatge))
-                inp_chat.delete(0, "end") 
+                inp_chat.delete(0, "end")
+                widget_text_conversa.config(state=DISABLED) 
         except:
             if first_msj == 0:
+                widget_text_conversa.config(state=NORMAL)
                 widget_text_conversa.insert(INSERT, "(NO SE HA PODIDO ENVIAR EL MENSAJE) Tú >> {}".format(missatge))
                 inp_chat.delete(0, "end")
+                widget_text_conversa.config(state=DISABLED)
                 first_msj = 1
             else:
+                widget_text_conversa.config(state=NORMAL)
                 widget_text_conversa.insert(INSERT, "\n\n(NO SE HA PODIDO ENVIAR EL MENSAJE) Tú >> {}".format(missatge))
                 inp_chat.delete(0, "end") 
+                widget_text_conversa.config(state=DISABLED)
 
 def ventana_chat_principal(nom_usuari_lateral):
     global nom_usuari
@@ -435,7 +450,7 @@ def ventana_chat_principal(nom_usuari_lateral):
     scroll_widget_conversa = Scrollbar(frame_conversa_del_chat)
     scroll_widget_conversa.pack(side=RIGHT, fill=Y)
 
-    widget_text_conversa = Text(frame_conversa_del_chat, width=76, height=24, bg="white", borderwidth=0, font=("THIN", 15))
+    widget_text_conversa = Text(frame_conversa_del_chat, width=76, height=24, bg="white", borderwidth=0, font=("THIN", 15), state=DISABLED)
     widget_text_conversa.pack(side=LEFT, fill=Y)
 
     scroll_widget_conversa.config(command=widget_text_conversa.yview)
