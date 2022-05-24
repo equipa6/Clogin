@@ -3,7 +3,6 @@ import socket
 import threading
 from tkinter import ttk
 
-#SOCKET CONEXIÓ CLIENT -----------------------------------------------------------------------------------------------------------------------
 client_clogin = socket.socket()
 ip_servidor_socket = "127.0.0.1"
 
@@ -13,8 +12,6 @@ def connexio_client_servidor(nombre_cliente):
     resposta = client_clogin.recv(1024)
     resposta = resposta.decode()
     return resposta
-
-#TKINTER (DISENY DE L'APLICACIÓ) ----------------------------------------------------------------------------------------------
 
 validator_ventana_ajustes_generales = 0
 def destory_ventana_ajustes_generales():
@@ -26,34 +23,105 @@ def modificacio_estats_usuari(valor):
     global estat_usuari
     estat_usuari.config(text=valor)
 
+def canviarcolorsprincipals(color, secundari, lletra):
+    global color_primari_variable
+    global color_secundari_variable
+    global color_terciari_variable
+    color_primari_variable = color
+    color_secundari_variable = secundari
+    color_terciari_variable = lletra
+    menu_configuracio.config(bg=color)
+    menu_imatge_configuracio.config(bg=color)
+    espai_titol_configuracio.config(bg=secundari)
+    nom_titol_configuracio.config(fg=lletra, bg=secundari)
+    imatge_ajustes_menu_usuari.config(bg=secundari)
+    nom_usuari_configuracio.config(fg=lletra, bg=color)
+    titol_canviar_tema.config(fg=lletra, bg=color)
+    canviar_nom_usuari.config(fg=lletra, bg=color)
+    canviar_contrasenya.config(fg=lletra, bg=color)
+    imatge_clau.config(bg=color)
+    foto_usuaris.config(bg=color)
+    imatge_camera.config(bg=color)
+    estat_usuari.config(bg=color, fg=lletra)
+    boto_canviar_nom_usuari.config(bg=secundari)
+    boto_canviar_contrasenya.config(bg=secundari)
+    llista_usuaris_bloquejats.config(bg=secundari)
+    canviar_estat.config(bg=secundari)
+    label_tu_cuenta.config(bg=color, fg=lletra)
+    usuari_foto.config(bg=color)
+    logo_clogin.config(bg=color)
+    frame_lateral.config(bg=color)
+    contacts_label.config(bg=color, fg=lletra)
+    nom_usuari.config(bg=secundari, fg=lletra)
+    ajustes_generales_button.config(bg=color)
+    afegir_contactes.config(bg=color)
+    frame_usuari.config(bg=secundari)
+    label_ajustes_button.config(bg=secundari)
+    nom_clogin.config(bg=color, fg=lletra)
+    my_name.config(bg=color, fg=lletra)
+    usuari_foto1.config(bg=secundari)
+    send_button.config(bg=secundari, fg=lletra, activebackground=color, activeforeground=lletra)
+    frame_per_omplir_boto.config(bg=secundari)
+    canvas.config(bg=color)
+    main_frame.config(bg=color)
+    frame_usuaris_afegits.config(bg=color)
+    sframe.config(bg=color)
+    try:
+        ventana_afegir_usuaris.config(bg=color)
+        titol_usuaris.config(bg=color, fg=lletra)
+        imatge_ventana.config(bg=color)
+        introduir_nom_usuari.config(bg=color, fg=lletra)
+        boto_afegir_usuaris.config(bg=secundari)
+    except:
+        pass
+
+color_primari_variable = "#8cb3ff"
+color_secundari_variable = "#606fff"
+color_terciari_variable = "#000000"
+
 def ventana_configuracio_general_usuari():
     global estat_usuari
     global menu_configuracio
     global validator_ventana_ajustes_generales
+    global menu_imatge_configuracio
+    global espai_titol_configuracio
+    global nom_titol_configuracio
+    global imatge_ajustes_menu_usuari
+    global nom_usuari_configuracio
+    global titol_canviar_tema
+    global canviar_nom_usuari
+    global canviar_contrasenya
+    global imatge_clau
+    global foto_usuaris
+    global imatge_camera
+    global boto_canviar_contrasenya
+    global boto_canviar_nom_usuari
+    global llista_usuaris_bloquejats
+    global canviar_estat
     if validator_ventana_ajustes_generales == 0:
         validator_ventana_ajustes_generales = 1
         menu_configuracio = Toplevel()
         menu_configuracio.geometry("500x600")
         menu_configuracio.resizable(0,0)
         menu_configuracio.title("Configuració General")
-        menu_configuracio.config(bg="#8cb3ff")
+        menu_configuracio.config(bg=color_primari_variable)
         imatge_menu_configuracio = PhotoImage(file="contactes.png")
         imatge_menu_configuracio = imatge_menu_configuracio.subsample(3)
-        menu_imatge_configuracio = Label(menu_configuracio, image=imatge_menu_configuracio, bg="#8cb3ff")
+        menu_imatge_configuracio = Label(menu_configuracio, image=imatge_menu_configuracio, bg=color_primari_variable)
         menu_imatge_configuracio.place(x=0, y=50)
-        espai_titol_configuracio = Frame(menu_configuracio, width=500, height=55, relief="solid", borderwidth=2, bg="#4682B4",)
+        espai_titol_configuracio = Frame(menu_configuracio, width=500, height=55, relief="solid", borderwidth=2, bg=color_secundari_variable)
         espai_titol_configuracio.place(x=0, y=0)
         ajustes = PhotoImage(file="botoajustes.png")
         ajustes = ajustes.subsample(23)
-        imatge_ajustes_menu_usuari = Label(espai_titol_configuracio, image=ajustes, bg="#4682b4")
+        imatge_ajustes_menu_usuari = Label(espai_titol_configuracio, image=ajustes, bg=color_secundari_variable)
         imatge_ajustes_menu_usuari.place(x=70, y=12)
-        nom_titol_configuracio = Label(espai_titol_configuracio, text="CONFIGURACIÓ GENERAL", font=("THIN", 18, "bold"), bg="#4682b4", fg="white")
+        nom_titol_configuracio = Label(espai_titol_configuracio, text="CONFIGURACIÓ GENERAL", font=("THIN", 18, "bold"), bg=color_secundari_variable, fg=color_terciari_variable)
         nom_titol_configuracio.place(x=100, y=7)
-        nom_usuari_configuracio = Label(menu_configuracio, text="Usuari", font=("THIN", 18, "bold"), bg="#8cb3ff")
+        nom_usuari_configuracio = Label(menu_configuracio, text="Usuari", font=("THIN", 18, "bold"), bg=color_primari_variable)
         nom_usuari_configuracio.place(x=200, y=80)
         canviar_estat = Menubutton(menu_configuracio, text="Canviar estat", font=("THIN", 12, "bold"), bg="#606fff", cursor="hand2", fg="#ffee04", activebackground="#ffff98", activeforeground="#606fff")
         canviar_estat.place(x=200, y=150)
-        estat_usuari = Label(menu_configuracio, bg="#8cb3ff", fg="white", font=("THIN", 14, "bold"), cursor="hand2")
+        estat_usuari = Label(menu_configuracio, bg=color_primari_variable, fg="white", font=("THIN", 14, "bold"), cursor="hand2")
         estat_usuari.place(x=335, y=150)
         menu_estat = Menu(canviar_estat, tearoff=False, bg="#606fff", fg="white")
         menu_estat.add_radiobutton(label="Desconnectat", font=("THIN", 12, "bold"), command= lambda:modificacio_estats_usuari("Desconnectat"))
@@ -62,23 +130,23 @@ def ventana_configuracio_general_usuari():
         menu_estat.add_radiobutton(label="Estic en l'escola", font=("THIN", 12, "bold"), command= lambda:modificacio_estats_usuari("Estic a l'escola"))
         menu_estat.add_radiobutton(label="No molestis", font=("THIN", 12, "bold"), command= lambda:modificacio_estats_usuari("No molestis"))
         canviar_estat["menu"] = menu_estat
-        titol_canviar_tema = Label(menu_configuracio, text="Canviar tema", font=("THIN", 12, "bold"), bg="#8cb3ff")
+        titol_canviar_tema = Label(menu_configuracio, text="Canviar tema", font=("THIN", 12, "bold"), bg=color_primari_variable)
         titol_canviar_tema.place(x=45, y=250)
-        canviar_nom_usuari = Label(menu_configuracio, text="Canviar el teu nom", font=("THIN", 12, "bold"), bg="#8cb3ff")
+        canviar_nom_usuari = Label(menu_configuracio, text="Canviar el teu nom", font=("THIN", 12, "bold"), bg=color_primari_variable)
         canviar_nom_usuari.place(x=45, y=320)
         entry_canviar_nom = Entry(menu_configuracio, width=20, borderwidth=1, relief="solid", font=("THIN", 14))
         entry_canviar_nom.place(x=230, y=323)
         boto_canviar_nom_usuari = Button(menu_configuracio, text=">>", font=("THIN", 10, "bold"), borderwidth=0, cursor="hand2", activebackground="#ffff98",fg="#ffee04", bg="#606fff", activeforeground="#606fff")
         boto_canviar_nom_usuari.place(x=465, y=323)
-        canviar_contrasenya = Label(menu_configuracio, text="Canviar contrasenya", font=("THIN", 12, "bold"), bg="#8cb3ff")
+        canviar_contrasenya = Label(menu_configuracio, text="Canviar contrasenya", font=("THIN", 12, "bold"), bg=color_primari_variable)
         canviar_contrasenya.place(x=45, y=390)
         clau = PhotoImage(file="clau.png")
         clau = clau.subsample(20)
-        imatge_clau = Label(menu_configuracio, image=clau, bg="#8cb3ff")
+        imatge_clau = Label(menu_configuracio, image=clau, bg=color_primari_variable)
         imatge_clau.place(x=2, y=390)
         imatge_usuaris = PhotoImage(file="usuari.png")
         imatge_usuaris = imatge_usuaris.subsample(22)
-        foto_usuaris = Label(menu_configuracio, image=imatge_usuaris, bg="#8cb3ff")
+        foto_usuaris = Label(menu_configuracio, image=imatge_usuaris, bg=color_primari_variable)
         foto_usuaris.place(x=2, y=316)
         entry_canviar_contrasenya = Entry(menu_configuracio, width=20, borderwidth=1, relief="solid", font=("THIN", 14))
         entry_canviar_contrasenya.place(x=230, y=392)
@@ -91,23 +159,23 @@ def ventana_configuracio_general_usuari():
         linia_separar_ajustes.place(x=0, y=220)
         camera = PhotoImage(file="camera.png")
         camera = camera.subsample(45)
-        imatge_camera = Label(menu_configuracio, image=camera, bg="#8cb3ff")
+        imatge_camera = Label(menu_configuracio, image=camera, bg=color_primari_variable)
         imatge_camera.place(x=2, y=245)
-        boto_clar_tema = Button(menu_configuracio, borderwidth=1, cursor="hand2", relief="solid", width=3, height=1)
+        boto_clar_tema = Button(menu_configuracio, borderwidth=1, cursor="hand2", relief="solid", width=3, height=1, command=lambda:canviarcolorsprincipals("#84C4F4","#4682B4","black"))
         boto_clar_tema.place(x=230, y=250)
-        boto_blau_tema = Button(menu_configuracio, borderwidth=1, cursor="hand2", relief="solid", width=3, height=1, bg="blue")
-        boto_blau_tema.place(x=258, y=250)
-        boto_verd_tema = Button(menu_configuracio, borderwidth=1, cursor="hand2", relief="solid", width=3, height=1, bg="green")
+        boto_blau_gris = Button(menu_configuracio, borderwidth=1, cursor="hand2", relief="solid", width=3, height=1, bg="grey", command=lambda:canviarcolorsprincipals("#636363","#2E2E32", "white"))
+        boto_blau_gris.place(x=258, y=250)
+        boto_verd_tema = Button(menu_configuracio, borderwidth=1, cursor="hand2", relief="solid", width=3, height=1, bg="green", command=lambda:canviarcolorsprincipals("#82C179","#1E6823", "black"))
         boto_verd_tema.place(x=287, y=250)
-        boto_fosc_tema = Button(menu_configuracio, borderwidth=1, cursor="hand2", relief="solid", width=3, height=1, bg="black")
+        boto_fosc_tema = Button(menu_configuracio, borderwidth=1, cursor="hand2", relief="solid", width=3, height=1, bg="#0d276d", command=lambda:canviarcolorsprincipals("#064b94","#0d276d","white"))
         boto_fosc_tema.place(x=316, y=250)
-        boto_vermell_tema = Button(menu_configuracio, borderwidth=1, cursor="hand2", relief="solid", width=3, height=1, bg="red")
+        boto_vermell_tema = Button(menu_configuracio, borderwidth=1, cursor="hand2", relief="solid", width=3, height=1, bg="red", command=lambda:canviarcolorsprincipals("#E66767", "#930000", "white"))
         boto_vermell_tema.place(x=345, y=250)
         boto_groc_tema = Button(menu_configuracio, borderwidth=1, cursor="hand2", relief="solid", width=3, height=1, bg="yellow")
         boto_groc_tema.place(x=374, y=250)
         boto_lila_tema = Button(menu_configuracio, borderwidth=1, cursor="hand2", relief="solid", width=3, height=1, bg="purple")
         boto_lila_tema.place(x=403, y=250)
-        boto_taronja_tema = Button(menu_configuracio, borderwidth=1, cursor="hand2", relief="solid", width=3, height=1, bg="orange")
+        boto_taronja_tema = Button(menu_configuracio, borderwidth=1, cursor="hand2", relief="solid", width=3, height=1, bg="orange", command=lambda:canviarcolorsprincipals("#FFCC66","#d3932a", "black" ))
         boto_taronja_tema.place(x=432, y=250)
         menu_configuracio.protocol("WM_DELETE_WINDOW",destory_ventana_ajustes_generales)
         menu_configuracio.mainloop()
@@ -127,8 +195,6 @@ def boto_nou_usuari(nom_del_usuari):
     global filas_contactos
     nom_del_usuari = nom_del_usuari.strip()
     if nom_del_usuari != "":
-        lletres_vermelles = Label(ventana_afegir_usuaris, text="Contacte afegit!", font=("THIN", 12, "bold"), fg="black", bg="#8cb3ff")
-        lletres_vermelles.place(x=80, y=180)
         Button(sframe, text=nom_del_usuari, width=20, font=("Calibri", 13, "bold"), borderwidth=1, relief="solid", bg="#606fff", cursor="hand2",fg="#ffee04", command=lambda nom_del_usuari=nom_del_usuari:nom_conversa_usuari(nom_del_usuari)).grid(row=filas_contactos, column=1, pady=15, padx=(5, 0))
         Label(sframe, image=foto_usuari_perfil_lateral_2, borderwidth=0, bg="#84C4F4").grid(row=filas_contactos, column=0, pady=15)
         filas_contactos += 1
@@ -136,25 +202,29 @@ def boto_nou_usuari(nom_del_usuari):
 def finestra_afegir_usuaris():
     global ventana_afegir_usuaris
     global validator_ventana_afegir_usuaris
+    global titol_usuaris
+    global imatge_ventana
+    global introduir_nom_usuari
+    global boto_afegir_usuaris
     if validator_ventana_afegir_usuaris == 0:
         validator_ventana_afegir_usuaris = 1
         ventana_afegir_usuaris = Toplevel()
         ventana_afegir_usuaris.geometry("600x300")
-        ventana_afegir_usuaris.config(bg="#8cb3ff")
+        ventana_afegir_usuaris.config(bg=color_primari_variable)
         ventana_afegir_usuaris.title("Afegir usuaris")
         ventana_afegir_usuaris.resizable(0,0)
         ventana_afegir_usuaris.geometry("+375+125")
-        titol_usuaris = Label(ventana_afegir_usuaris, text="Afegir usuaris", font=("THIN", 18, "bold"), bg="#8cb3ff")
+        titol_usuaris = Label(ventana_afegir_usuaris, text="Afegir usuaris", font=("THIN", 18, "bold"), bg=color_primari_variable, fg=color_terciari_variable)
         titol_usuaris.place(x=62, y=45)
-        introduir_nom_usuari = Label(ventana_afegir_usuaris, text="Introdueix el nom de l'usuari", font=("THIN", 16), bg="#8cb3ff")
+        introduir_nom_usuari = Label(ventana_afegir_usuaris, text="Introdueix el nom de l'usuari", font=("THIN", 16), bg=color_primari_variable, fg=color_terciari_variable)
         introduir_nom_usuari.place(x=17, y= 100)
         nom_afegir_usuari = Entry(ventana_afegir_usuaris, font=("Calibri", 16), borderwidth=1, relief="solid", bg="#ffffff")
         nom_afegir_usuari.place(x=35, y=150)
-        boto_afegir_usuaris = Button(ventana_afegir_usuaris, text="Afegeix", fg="#ffee04",bg="#606fff", cursor="hand2",font=("Calibri", 13, "bold"),width=14, borderwidth=0, activebackground="#ffff98", activeforeground="#606fff", command=lambda:boto_nou_usuari(nom_afegir_usuari.get()))
+        boto_afegir_usuaris = Button(ventana_afegir_usuaris, text="Afegeix", fg="#ffee04",bg=color_secundari_variable, cursor="hand2",font=("Calibri", 13, "bold"),width=14, borderwidth=0, activebackground="#ffff98", activeforeground="#606fff", command=lambda:boto_nou_usuari(nom_afegir_usuari.get()))
         boto_afegir_usuaris.place(x=78,y=210 )
         imatge_usuari = PhotoImage(file="contactes.png")
         tamany_imatge = imatge_usuari.subsample(2)
-        imatge_ventana = Label(ventana_afegir_usuaris, image=tamany_imatge, bg="#8cb3ff")
+        imatge_ventana = Label(ventana_afegir_usuaris, image=tamany_imatge, bg=color_primari_variable)
         imatge_ventana.place(x=330, y=10)
         ventana_afegir_usuaris.protocol("WM_DELETE_WINDOW", destory_ventana_afegir_usuaris)
         ventana_afegir_usuaris.mainloop()
@@ -185,10 +255,7 @@ def validacio_conta_registre_sessio(name_registre, password_registre, validator)
                 pass
             ventana_chat_principal(name_registre.capitalize())
 
-# socket -------------------------------------------------------------------------------------------------------------------------------
-
 first_msj = 0
-
 def recibir_mensajes():
     global first_msj
     while True:
@@ -199,31 +266,31 @@ def recibir_mensajes():
                 widget_text_conversa.insert(INSERT, "{} >> {}".format(name_user,mensaje_amigo))
                 first_msj = 1
             else:
-                widget_text_conversa.insert(INSERT, "\n{} >> {}".format(name_user,mensaje_amigo))
+                widget_text_conversa.insert(INSERT, "\n\n{} >> {}".format(name_user,mensaje_amigo))
         except:
             pass
 
 def enviar_missatge(usuari, missatge):
     global first_msj
-    try:
-        client_clogin.send("{},{}".format(usuari,missatge).encode())
-        if first_msj == 0:
-            widget_text_conversa.insert(INSERT, "Tú >> {}".format(missatge))
-            inp_chat.delete(0, "end")
-            first_msj = 1
-        else:
-            widget_text_conversa.insert(INSERT, "\nTú >> {}".format(missatge))
-            inp_chat.delete(0, "end") 
-    except:
-        if first_msj == 0:
-            widget_text_conversa.insert(INSERT, "(NO SE HA PODIDO ENVIAR EL MENSAJE) Tú >> {}".format(missatge))
-            inp_chat.delete(0, "end")
-            first_msj = 1
-        else:
-            widget_text_conversa.insert(INSERT, "\n(NO SE HA PODIDO ENVIAR EL MENSAJE) Tú >> {}".format(missatge))
-            inp_chat.delete(0, "end") 
-
-#-----------------------------------------------------------------------------------------------------------------------------------------
+    espais_miss_validator = missatge.strip()
+    if espais_miss_validator != "":
+        try:
+            client_clogin.send("{},{}".format(usuari,missatge).encode())
+            if first_msj == 0:
+                widget_text_conversa.insert(INSERT, "Tú >> {}".format(missatge))
+                inp_chat.delete(0, "end")
+                first_msj = 1
+            else:
+                widget_text_conversa.insert(INSERT, "\n\nTú >> {}".format(missatge))
+                inp_chat.delete(0, "end") 
+        except:
+            if first_msj == 0:
+                widget_text_conversa.insert(INSERT, "(NO SE HA PODIDO ENVIAR EL MENSAJE) Tú >> {}".format(missatge))
+                inp_chat.delete(0, "end")
+                first_msj = 1
+            else:
+                widget_text_conversa.insert(INSERT, "\n\n(NO SE HA PODIDO ENVIAR EL MENSAJE) Tú >> {}".format(missatge))
+                inp_chat.delete(0, "end") 
 
 def ventana_chat_principal(nom_usuari_lateral):
     global nom_usuari
@@ -233,6 +300,26 @@ def ventana_chat_principal(nom_usuari_lateral):
     global inp_chat
     global sframe
     global foto_usuari_perfil_lateral_2
+    global frame_lateral
+    global photo_logo_clogin
+    global nom_clogin
+    global imagen_ajustes_generales_button
+    global ajustes_generales_button
+    global label_tu_cuenta
+    global usuari_foto
+    global logo_clogin
+    global contacts_label
+    global frame_usuari
+    global label_ajustes_button
+    global afegir_contactes
+    global my_name
+    global usuari_foto1
+    global send_button
+    global inp_chat
+    global frame_per_omplir_boto
+    global canvas
+    global main_frame
+    global frame_usuaris_afegits
 
     name_user = "Usuari"
     chat_ventana = Tk()
@@ -303,7 +390,7 @@ def ventana_chat_principal(nom_usuari_lateral):
     #Button(sframe, text="", width=20, font=("Calibri", 13, "bold"), borderwidth=0, bg="#84C4F4").grid(row=i, column=1, pady=15, padx=(5, 0))
 
     for i in range(100):
-        Label(sframe, text="", font=("Calibri", 13, "bold"), borderwidth=0, bg="#84C4F4").grid(row=i, column=1, pady=15, padx=(5, 0))
+        Label(sframe, text="a", font=("Calibri", 1, "bold"), borderwidth=0, bg="#84C4F4").grid(row=i, column=1, pady=15, padx=(5, 0))
 
     # Frame Conversa -------------------------------------------------------------------------------------------
 
@@ -318,8 +405,8 @@ def ventana_chat_principal(nom_usuari_lateral):
 
     foto_usuari_perfil = PhotoImage(file="foto_perfil.png")
     foto_usuari_perfil = foto_usuari_perfil.subsample(10)
-    usuari_foto = Label(frame_usuari, image=foto_usuari_perfil, borderwidth=0, bg="#4682B4")
-    usuari_foto.place(x=12, y=12)
+    usuari_foto1 = Label(frame_usuari, image=foto_usuari_perfil, borderwidth=0, bg="#4682B4")
+    usuari_foto1.place(x=12, y=12)
 
     inp_chat = Entry(frame_conversa, font=("THIN", 19), bg="#2C3E50", fg="#ffffff", width=55, borderwidth=0)
     inp_chat.place(x=0, y=634)
