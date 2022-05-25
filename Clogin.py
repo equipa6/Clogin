@@ -324,6 +324,13 @@ def enviar_missatge(usuari, missatge):
 
 la_meva_conta = ""
 
+def fi_de_sessio():
+    try:
+        client_clogin.send("+{}".format(la_meva_conta).encode()) 
+        chat_ventana.destroy()
+    except:
+        print("No s'ha pogut enviar el missatge de fi de sessio")
+
 def ventana_chat_principal(nom_usuari_lateral):
     global nom_usuari
     global widget_text_conversa
@@ -476,6 +483,7 @@ def ventana_chat_principal(nom_usuari_lateral):
     hilo_recive_msj = threading.Thread(target=recibir_mensajes)
     hilo_recive_msj.daemon = True
     hilo_recive_msj.start()
+    chat_ventana.protocol("WM_DELETE_WINDOW",fi_de_sessio)
     chat_ventana.mainloop()
     
 def ventana_registredesessio():
