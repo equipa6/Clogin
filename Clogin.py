@@ -1,3 +1,4 @@
+from glob import glob
 from tkinter import *
 import socket
 import threading
@@ -274,8 +275,9 @@ def recibir_mensajes():
             indice_coma = mensaje_amigo.index(",")
             mensaje_amigo = mensaje_amigo[indice_coma+1:]
             user_name = mensaje_amigo[0:indice_coma]
+            user_name_val = user_name.strip()
             for nombres in llista_usuaris_agregats:
-                if nombres == user_name:
+                if nombres == user_name_val:
                     if first_msj == 0:
                         widget_text_conversa.config(state=NORMAL)
                         widget_text_conversa.insert(INSERT, "{} >> {}".format(name_user,mensaje_amigo))
@@ -293,7 +295,7 @@ def enviar_missatge(usuari, missatge):
     espais_miss_validator = missatge.strip()
     if espais_miss_validator != "":
         try:
-            client_clogin.send("{},{}".format(usuari,missatge).encode())
+            client_clogin.send("{}-{}_{}".format(usuari,missatge,la_meva_conta).encode())
             if first_msj == 0:
                 widget_text_conversa.config(state=NORMAL)
                 widget_text_conversa.insert(INSERT, "Tú >> {}".format(missatge))
@@ -317,6 +319,8 @@ def enviar_missatge(usuari, missatge):
                 widget_text_conversa.insert(INSERT, "\n(NO SE HA PODIDO ENVIAR EL MENSAJE) Tú >> {}".format(missatge))
                 inp_chat.delete(0, "end") 
                 widget_text_conversa.config(state=DISABLED)
+
+la_meva_conta = ""
 
 def ventana_chat_principal(nom_usuari_lateral):
     global nom_usuari
@@ -346,7 +350,9 @@ def ventana_chat_principal(nom_usuari_lateral):
     global canvas
     global main_frame
     global frame_usuaris_afegits
+    global la_meva_conta
 
+    la_meva_conta = nom_usuari_lateral
     name_user = "Usuari"
     chat_ventana = Tk()
     chat_ventana.title("Clogin")
