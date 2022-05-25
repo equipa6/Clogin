@@ -203,7 +203,7 @@ def boto_nou_usuari(nom_del_usuari):
     global filas_contactos
     global llista_usuaris_agregats
     nom_del_usuari2 = nom_del_usuari.strip()
-    if nom_del_usuari2 != "":
+    if nom_del_usuari2 != "" and la_meva_conta != nom_del_usuari2:
         llista_usuaris_agregats.append(nom_del_usuari)
         Button(sframe, text=nom_del_usuari, width=20, font=("Calibri", 13, "bold"), borderwidth=1, relief="solid", bg="#606fff", cursor="hand2",fg="#ffee04", command=lambda nom_del_usuari=nom_del_usuari:nom_conversa_usuari(nom_del_usuari)).grid(row=filas_contactos, column=1, pady=15, padx=(5, 0))
         Label(sframe, image=foto_usuari_perfil_lateral_2, borderwidth=0, bg="#84C4F4").grid(row=filas_contactos, column=0, pady=15)
