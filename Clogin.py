@@ -252,7 +252,7 @@ def validacio_conta(name, password):
                     
             if conn == "Correct":
                 root.destroy()
-                ventana_chat_principal(name.capitalize())
+                ventana_chat_principal(name)
 
 def validacio_conta_registre_sessio(name_registre, password_registre, validator):
     name_registre = name_registre.strip()
@@ -263,7 +263,7 @@ def validacio_conta_registre_sessio(name_registre, password_registre, validator)
                 ventana.destroy()
             except:
                 pass
-            ventana_chat_principal(name_registre.capitalize())
+            ventana_chat_principal(name_registre)
 
 first_msj = 0
 def recibir_mensajes():
@@ -272,21 +272,23 @@ def recibir_mensajes():
         try:
             mensaje_amigo = client_clogin.recv(1024)
             mensaje_amigo = mensaje_amigo.decode()
+
             indice_coma = mensaje_amigo.index(",")
-            mensaje_amigo = mensaje_amigo[indice_coma+1:]
-            user_name = mensaje_amigo[0:indice_coma]
-            user_name_val = user_name.strip()
-            for nombres in llista_usuaris_agregats:
-                if nombres == user_name_val:
-                    if first_msj == 0:
-                        widget_text_conversa.config(state=NORMAL)
-                        widget_text_conversa.insert(INSERT, "{} >> {}".format(name_user,mensaje_amigo))
-                        widget_text_conversa.config(state=DISABLED)
-                        first_msj = 1
-                    else:
-                        widget_text_conversa.config(state=NORMAL)
-                        widget_text_conversa.insert(INSERT, "\n{} >> {}".format(name_user,mensaje_amigo))
-                        widget_text_conversa.config(state=DISABLED)
+            mensaje_amigo_normal = mensaje_amigo[indice_coma+1:]
+
+            user_name_val = mensaje_amigo[0:indice_coma]
+            user_name_val = user_name_val.strip()
+
+            if user_name_val in llista_usuaris_agregats:
+                if first_msj == 0:
+                    widget_text_conversa.config(state=NORMAL)
+                    widget_text_conversa.insert(INSERT, "{} >> {}".format(name_user,mensaje_amigo_normal))
+                    widget_text_conversa.config(state=DISABLED)
+                    first_msj = 1
+                else:
+                    widget_text_conversa.config(state=NORMAL)
+                    widget_text_conversa.insert(INSERT, "\n{} >> {}".format(name_user,mensaje_amigo_normal))
+                    widget_text_conversa.config(state=DISABLED)
         except:
             pass
 
