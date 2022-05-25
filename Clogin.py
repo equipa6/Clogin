@@ -195,11 +195,15 @@ def nom_conversa_usuari(nombre):
     name_user = nombre
     nom_usuari.config(text=name_user)
 
+
+llista_usuaris_agregats = []
 filas_contactos = 0
 def boto_nou_usuari(nom_del_usuari):
     global filas_contactos
-    nom_del_usuari = nom_del_usuari.strip()
-    if nom_del_usuari != "":
+    global llista_usuaris_agregats
+    nom_del_usuari2 = nom_del_usuari.strip()
+    if nom_del_usuari2 != "":
+        llista_usuaris_agregats.append(nom_del_usuari)
         Button(sframe, text=nom_del_usuari, width=20, font=("Calibri", 13, "bold"), borderwidth=1, relief="solid", bg="#606fff", cursor="hand2",fg="#ffee04", command=lambda nom_del_usuari=nom_del_usuari:nom_conversa_usuari(nom_del_usuari)).grid(row=filas_contactos, column=1, pady=15, padx=(5, 0))
         Label(sframe, image=foto_usuari_perfil_lateral_2, borderwidth=0, bg="#84C4F4").grid(row=filas_contactos, column=0, pady=15)
         filas_contactos += 1
@@ -267,15 +271,20 @@ def recibir_mensajes():
         try:
             mensaje_amigo = client_clogin.recv(1024)
             mensaje_amigo = mensaje_amigo.decode()
-            if first_msj == 0:
-                widget_text_conversa.config(state=NORMAL)
-                widget_text_conversa.insert(INSERT, "{} >> {}".format(name_user,mensaje_amigo))
-                widget_text_conversa.config(state=DISABLED)
-                first_msj = 1
-            else:
-                widget_text_conversa.config(state=NORMAL)
-                widget_text_conversa.insert(INSERT, "\n\n{} >> {}".format(name_user,mensaje_amigo))
-                widget_text_conversa.config(state=DISABLED)
+            indice_coma = mensaje_amigo.index(",")
+            mensaje_amigo = mensaje_amigo[indice_coma+1:]
+            user_name = mensaje_amigo[0:indice_coma]
+            for nombres in llista_usuaris_agregats:
+                if nombres == user_name:
+                    if first_msj == 0:
+                        widget_text_conversa.config(state=NORMAL)
+                        widget_text_conversa.insert(INSERT, "{} >> {}".format(name_user,mensaje_amigo))
+                        widget_text_conversa.config(state=DISABLED)
+                        first_msj = 1
+                    else:
+                        widget_text_conversa.config(state=NORMAL)
+                        widget_text_conversa.insert(INSERT, "\n{} >> {}".format(name_user,mensaje_amigo))
+                        widget_text_conversa.config(state=DISABLED)
         except:
             pass
 
@@ -293,7 +302,7 @@ def enviar_missatge(usuari, missatge):
                 first_msj = 1
             else:
                 widget_text_conversa.config(state=NORMAL)
-                widget_text_conversa.insert(INSERT, "\n\nTú >> {}".format(missatge))
+                widget_text_conversa.insert(INSERT, "\nTú >> {}".format(missatge))
                 inp_chat.delete(0, "end")
                 widget_text_conversa.config(state=DISABLED) 
         except:
@@ -305,7 +314,7 @@ def enviar_missatge(usuari, missatge):
                 first_msj = 1
             else:
                 widget_text_conversa.config(state=NORMAL)
-                widget_text_conversa.insert(INSERT, "\n\n(NO SE HA PODIDO ENVIAR EL MENSAJE) Tú >> {}".format(missatge))
+                widget_text_conversa.insert(INSERT, "\n(NO SE HA PODIDO ENVIAR EL MENSAJE) Tú >> {}".format(missatge))
                 inp_chat.delete(0, "end") 
                 widget_text_conversa.config(state=DISABLED)
 
