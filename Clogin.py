@@ -239,7 +239,9 @@ def finestra_afegir_usuaris():
         ventana_afegir_usuaris.protocol("WM_DELETE_WINDOW", destory_ventana_afegir_usuaris)
         ventana_afegir_usuaris.mainloop()
     
+validador_connexion = ""
 def validacio_conta(name, password):
+    global validador_connexion
     name = name.strip()
     password = password.strip()
     if name != "" and password != "":
@@ -247,12 +249,14 @@ def validacio_conta(name, password):
         if nom_tretze == False:
             try:
                 conn = connexio_client_servidor(name)
+                validador_connexion = conn
             except:
-                conn = "Error"
-                    
-            if conn == "Correct":
+                validador_connexion = "Error"   
+            if validador_connexion == "Correct":
                 root.destroy()
                 ventana_chat_principal(name)
+            else:
+                root.destroy()
 
 def validacio_conta_registre_sessio(name_registre, password_registre, validator):
     name_registre = name_registre.strip()
@@ -330,6 +334,8 @@ def fi_de_sessio():
         chat_ventana.destroy()
     except:
         print("No s'ha pogut enviar el missatge de fi de sessio")
+        chat_ventana.destroy()
+
 
 def ventana_chat_principal(nom_usuari_lateral):
     global nom_usuari
