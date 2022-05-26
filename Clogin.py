@@ -283,7 +283,7 @@ def recibir_mensajes():
             user_name_val = mensaje_amigo[0:indice_coma]
             user_name_val = user_name_val.strip()
 
-            if user_name_val in llista_usuaris_agregats:
+            if user_name_val in llista_usuaris_agregats and user_name_val == name_user:
                 if first_msj == 0:
                     widget_text_conversa.config(state=NORMAL)
                     widget_text_conversa.insert(INSERT, "{} >> {}".format(name_user,mensaje_amigo_normal))
