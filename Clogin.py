@@ -1,11 +1,10 @@
-from glob import glob
 from tkinter import *
 import socket
 import threading
 from tkinter import ttk
 
 client_clogin = socket.socket()
-ip_servidor_socket = "172.21.233.33"
+ip_servidor_socket = "localhost"
 
 def connexio_client_servidor(nombre_cliente):    
     client_clogin.connect((ip_servidor_socket, 8432))
@@ -240,34 +239,91 @@ def finestra_afegir_usuaris():
         ventana_afegir_usuaris.mainloop()
     
 validador_connexion = ""
+client_en_espera = 0
 def validacio_conta(name, password):
     global validador_connexion
+    global client_en_espera
     name = name.strip()
     password = password.strip()
     if name != "" and password != "":
         nom_tretze = confirmacio_nom_usuari_tretze()
-        if nom_tretze == False:
-            try:
-                conn = connexio_client_servidor(name)
-                validador_connexion = conn
-            except:
-                validador_connexion = "Error"   
-            if validador_connexion == "Correct":
-                root.destroy()
-                ventana_chat_principal(name)
-            else:
-                root.destroy()
+        if client_en_espera == 0:
+            if nom_tretze == False:
+                try:
+                    conn = connexio_client_servidor("{}&{}".format(name,password))
+                    validador_connexion = conn
+                except:
+                    validador_connexion = "Error" 
+                
+                if validador_connexion == "Correct":
+                    root.destroy()
+                    ventana_chat_principal(name)
+                elif validador_connexion == "Error":
+                    print("client en espera")
+                    client_en_espera = 1
+        else:
+            if nom_tretze == False:
+                try:
+                    client_clogin.send("{}&{}".format(name,password).encode())
+                    res = client_clogin.recv(1024)
+                    resp = res.decode()
+                    print(resp)
+                    validador_connexion = resp
+                except:
+                    pass
 
-def validacio_conta_registre_sessio(name_registre, password_registre, validator):
+                if validador_connexion == "Correct":
+                    root.destroy()
+                    ventana_chat_principal(name)
+                elif validador_connexion == "Error":
+                    pass
+
+
+validador_connexion_register = ""
+def validacio_conta_registre_sessio(name_registre, password_registre, repeat_password_registre):
+    global client_en_espera
+    global validador_connexion_register
     name_registre = name_registre.strip()
     password_registre = password_registre.strip()
     if name_registre != "" and password_registre != "":
-        if validator == False:
-            try:
-                ventana.destroy()
-            except:
-                pass
-            ventana_chat_principal(name_registre)
+        nom_tretze_i_contrasenya_repeteix = confirmacio_nom_usuari_tretze_registre_sessio(name_registre, password_registre, repeat_password_registre)
+        if client_en_espera == 0:
+            if nom_tretze_i_contrasenya_repeteix == False:
+                try:
+                    conn_registre = connexio_client_servidor("${}¿{}".format(name_registre,password_registre))
+                    validador_connexion_register = conn_registre
+                except:
+                    validador_connexion_register = "Servidor"
+                
+                cuenta_registrada = Label(ventana, text="Conta registrada", font=("Calibri", 12, "bold"), fg="white", bg="white")
+                cuenta_registrada.place(x=90, y=460)
+
+                if validador_connexion_register == "Correct":
+                    cuenta_registrada.config(text="Cuenta registrada", fg="black") 
+                    client_en_espera = 1
+                elif validador_connexion_register == "Servidor":
+                    cuenta_registrada.config(text="No s'ha pogut establir connexió amb el servidor", fg="red")
+                    client_en_espera = 1
+                elif validador_connexion_register == "Error":
+                    cuenta_registrada.config(text="Usuari ja existent", fg="red")
+                    client_en_espera = 1
+        else:
+            if nom_tretze_i_contrasenya_repeteix == False:
+                try:
+                    client_clogin.send("${}¿{}".format(name_registre,password_registre))
+                    rescibri_mensaje_registro = client_clogin.recv(1024)
+                    resposta_registre = rescibri_mensaje_registro.decode()
+                    validador_connexion_register = resposta_registre
+                except:
+                    validador_connexion_register = "Servidor"
+
+                if validador_connexion_register == "Correct":
+                    cuenta_registrada.config(text="Cuenta registrada", fg="black")
+                elif validador_connexion_register == "Servidor":
+                    cuenta_registrada.config(text="No s'ha pogut establir connexió amb el servidor", fg="red")
+                elif validador_connexion_register == "Error":
+                    cuenta_registrada.config(text="Usuari ja existent", fg="red")
+                            
 
 first_msj = 0
 def recibir_mensajes():
@@ -528,7 +584,7 @@ def ventana_registredesessio():
     inpconfirmaciocontrasenya.place(x=28, y=395)
     inpconfirmaciocontrasenya.config(show="*")
 
-    botonsingup = Button(ventana, text="Registra't", fg="#ffee04", bg="#606fff", cursor="hand2", font=("Calibri", 15, "bold"), width=18, borderwidth=0, command=lambda:confirmacio_nom_usuari_tretze_registre_sessio(inpnom.get(), inpcontrasenya.get(), inpconfirmaciocontrasenya.get()), activebackground="#ffff98", activeforeground="#606fff")
+    botonsingup = Button(ventana, text="Registra't", fg="#ffee04", bg="#606fff", cursor="hand2", font=("Calibri", 15, "bold"), width=18, borderwidth=0, command=lambda:validacio_conta_registre_sessio(inpnom.get(), inpcontrasenya.get(), inpconfirmaciocontrasenya.get()), activebackground="#ffff98", activeforeground="#606fff")
     botonsingup.place(x=108, y=475)
 
     imatgeenrere = PhotoImage(file="enrere.png")
@@ -603,7 +659,8 @@ def confirmacio_nom_usuari_tretze_registre_sessio(nom_confirmer, contraseña_con
         error.place(x= 88, y= 430)
         validator_registre = True
 
-    validacio_conta_registre_sessio(nom_confirmer, contraseña_confirmer, validator_registre)
+    return validator_registre
+    #validacio_conta_registre_sessio(nom_confirmer, contraseña_confirmer, validator_registre)
 
 ventana_inicidesessio()
 #------------------------------------------------------------------------------------------------------------------------
