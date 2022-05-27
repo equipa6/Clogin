@@ -4,7 +4,7 @@ import threading
 from tkinter import ttk
 
 client_clogin = socket.socket()
-ip_servidor_socket = "localhost"
+ip_servidor_socket = "172.21.233.33"
 
 def connexio_client_servidor(nombre_cliente):    
     client_clogin.connect((ip_servidor_socket, 8432))
